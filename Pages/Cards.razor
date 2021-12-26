@@ -1,0 +1,94 @@
+﻿@page "/cards"
+@inject ValorantService ValService
+@inject NavigationManager NavManager
+<PageTitle>Player Cards</PageTitle>
+@using Microsoft.AspNetCore.Components
+@using ValorantManager.Data
+
+ @if (ValService.user.loginState == LoginState.LoggedIn)
+{
+    <h1>Player Cards</h1>
+
+    <div class="card-group">
+        @foreach (var card in ValService.Cards.Data)
+        {
+            <div class="col-sm-2">
+                <div class="card text-white m-1 text-center" style="background:#484848">
+                    <div class="card-header text-center" style="font-size:small">@card.DisplayName</div>
+                    <div class="card-body text-center align-content-center">
+                        <img class="card-img-top mx-auto" src="@card.LargeArt" style="width:60%;height:60%; display:flex">
+                        <div class="card-footer mx-auto text-center">
+                            <a class="btn btn-outline-primary btn-sm" @onclick="(() => SetCard(card))">Select</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+
+    <div class="@AlertClass" role="alert" style="position: fixed; bottom:0; right:0">
+        @AlertMsg
+    </div>
+}
+
+
+<style>
+
+    .AlertDefault {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .AlertFadeOut {
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s 1.5s, opacity 1.5s linear;
+    }
+
+</style>
+
+@code
+{
+
+    private string AlertClass = "";
+    private string AlertMsg = "";
+
+
+    private async Task SetCard(JsonModels.Cards.Datum SelectedCard)
+    {
+        try
+        {
+            JsonModels.Loadout.Root tmpLoadout = ValService.GetLoadout();
+            if (tmpLoadout != null)
+            {
+                tmpLoadout.Identity.PlayerCardID = SelectedCard.Uuid;
+                if (ValService.SetPlayerLoadout(tmpLoadout))
+                {
+                    AlertMsg = $"Successfully set player card to {SelectedCard.DisplayName}";
+                    AlertClass = "alert alert-success AlertDefault";
+                    await Task.Delay(1500);
+                    AlertClass = "alert alert-success AlertFadeOut";
+                }
+            }
+            else
+            {
+                throw new Exception("Error when fetching player loadout.");
+            }
+        }
+        catch (Exception ex)
+        {
+            AlertMsg = ex.Message;
+            AlertClass = "alert alert-danger AlertDefault";
+            await Task.Delay(5000);
+            AlertClass = "alert alert-danger AlertFadeOut";
+        }
+    }
+
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (ValService.user.loginState != LoginState.LoggedIn)
+            NavManager.NavigateTo("/");
+    }
+}

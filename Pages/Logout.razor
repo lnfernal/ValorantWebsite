@@ -1,0 +1,19 @@
+﻿@page "/logout"
+@inherits LayoutComponentBase
+@inject NavigationManager NavManager
+@using Microsoft.AspNetCore.Components;
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedSessionStorage ProtectedSessionStore
+@inject ValorantService valService
+<PageTitle>Logging out</PageTitle>
+
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await ProtectedSessionStore.DeleteAsync("token");
+        valService.Logout();
+        await InvokeAsync(StateHasChanged);
+        NavManager.NavigateTo("/");
+    }
+}

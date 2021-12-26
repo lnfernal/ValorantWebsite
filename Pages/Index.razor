@@ -1,0 +1,204 @@
+﻿@using System.ComponentModel.DataAnnotations
+@inherits LayoutComponentBase
+@using ValorantManager.Data
+@using System.Net;
+@using System.Web;
+@using ValorantManager.JsonModels;
+@using ValorantManager.Shared;
+@using Microsoft.AspNetCore.WebUtilities
+@using System.Text;
+@inject ValorantService valService
+@inject NavigationManager NavManager
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedSessionStorage ProtectedSessionStore
+
+@page "/"
+
+<PageTitle>Pro Swapper Valorant</PageTitle>
+
+<h1>Welcome to Pro Swapper Valorant</h1>
+
+@if (valService.user.loginState == LoginState.LoggedOut || valService.user.loginState == LoginState.WrongLogin)
+{
+    <p>Please login via your Valorant Token. Learn <a target="_blank" href="https://github.com/Pro-Swapper/ValorantGuide/blob/main/GettingToken.md">here</a> to get your Valorant token.</p>
+    <br />
+    <label class="font-weight-bold">Valorant Account Token:</label>
+    <EditForm Model="@valService.user">
+        <InputText class="form-control" style="width:30vw" @bind-Value="valService.user.Token" placeholder="xxxx" />
+    </EditForm>
+
+    <br>
+    <br>
+    <EditForm Model="@valService.user">
+        <label class="font-weight-bold">Valorant Account Login:</label>
+        <InputText class="form-control" style="width:30vw" @bind-Value="valService.user.auth_username" placeholder="Username" />
+        <br>
+        <InputText class="form-control" style="width:30vw" @bind-Value="valService.user.auth_password" placeholder="Password" />
+    </EditForm>
+
+    <EditForm Model="@valService.user">
+        <br />
+        <label class="font-weight-bold">Select your region (Optional):</label>
+        <br />
+        <div class="row-cols-6">
+            <InputSelect @bind-Value="valService.user.region">
+                @foreach (var value in Enum.GetValues(typeof(Regions)))
+                {
+                <option>@value</option>
+                }
+        </InputSelect>
+    </div>
+</EditForm>
+
+    <br />
+    <button class="btn btn-primary" @onclick="LoginButton">Login</button>
+    @if (valService.user.loginState == LoginState.WrongLogin)
+    {
+        <p role="status">That token is invalid! Tokens expire after 1 hour.</p>
+    }
+}
+
+
+
+
+@if (valService.user.loginState == LoginState.LoggingIn)
+{
+    <strong>Logging in...</strong>
+    <div class="spinner-border text-danger" role="status">
+    </div>
+}
+
+@if (valService.user.loginState == LoginState.LoggedIn)
+{
+    <label class="col-2 font-weight-bold">Welcome @valService.user.Name</label>
+}
+
+
+<br />
+<br />
+<br />
+<hr />
+<h2>News</h2>
+<br />
+
+<div class="card-group">
+    @foreach (var item in valService.News.Result.Data.AllContentstackArticles.Nodes.Take(12).ToList())
+    {
+        <div class="col-sm-3">
+            <div class="card text-white m-1 text-center" style="background:#484848">
+                <div class="card-header text-center" style="font-size:medium;height:60px">@item.Title</div>
+                <div class="card-body text-center align-content-center">
+                    <a href="@GetNewsURL(item)" target="_blank">
+                        <img class="card-img-top mx-auto" src="@item.Banner.Url" style="width: 100%;height:100%; object-fit:fill">
+                    </a>
+                </div>
+                <div class="card-footer text-muted">@GetTimeSince(item.Date)</div>
+            </div>
+        </div>
+    }
+</div>
+<br />
+
+<hr />
+<br />
+<h3><strong>Upcoming Features</strong></h3>
+<p class="text">
+    View Night Market<br />
+    Skin + Gun Buddy Presets<br />
+    See all own cosmetics<br />
+    Select any spray for mid round<br />
+    Gun Skin + Buddy Randomizer
+</p>
+
+<div style="position: relative;"><img src="https://publisher.linkvertise.com/cdn/ads/LV-468x60/Unbendgfannt-1.jpg" frameborder="0" height="60" width="468"><a href="https://publisher.linkvertise.com/ac/86737" target="_blank" style="position: absolute; top: 0; bottom: 0; left: 0; right: 0;"></a></div>
+
+
+<footer style="position:fixed; right:0px; bottom:0px;">
+    <div class="list-group-item text-break" style="font-size:small;background:#c62828;color:white;width:40vw;border-radius:13px">We are not affiliated, associated, authorized, endorsed by, or in any way officially connected with VALORANT or Riot Games, Inc.</div>
+</footer>
+@code {
+    protected async override void OnInitialized()
+    {
+        if (valService.user.loginState != LoginState.LoggedIn)
+        {
+            valService.user = new User();
+        }
+    }
+
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        if (valService.user.loginState != LoginState.LoggedIn)
+        {
+            var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
+            if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("token", out var OutToken))
+            {
+                valService.user.Token = Convert.ToString(OutToken);
+                await Task.Run(() => LoginButton());
+                StateHasChanged();
+            }
+            else
+            {
+                var tkn = await ProtectedSessionStore.GetAsync<string>("token");
+                if (tkn.Value != null)
+                {
+                    if (valService.user.Token == null)
+                    {
+                        valService.user.Token = tkn.Value;
+                        valService.user.loginState = LoginState.LoggingIn;
+                        await InvokeAsync(StateHasChanged);
+                        await Task.Run(() => LoginButton());
+                    }
+                }
+            }
+        }
+    }
+
+
+    private async Task LoginButton()
+    {
+        valService.user.loginState = LoginState.LoggingIn;
+
+        if (valService.user.auth_username != null && valService.user.auth_password != null)
+        {
+            try
+            {
+                valService.user.Token = UserPassLogin.Login(valService.user.auth_username, valService.user.auth_password);
+            }
+            catch
+            {
+                valService.user.loginState = LoginState.WrongLogin;
+                return;
+            }
+
+        }
+
+
+        await ProtectedSessionStore.SetAsync("token", valService.user.Token);
+        await Task.Run(() => valService.Login2());
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private static string GetNewsURL(JsonModels.News.Node item)
+    {
+        if (item.ExternalLink.Length > 0)
+        {
+            return item.ExternalLink;
+        }
+        else
+        {
+            return $"https://playvalorant.com/en-us{@item.Url.url}";
+        }
+    }
+
+    private static string GetTimeSince(DateTime date) => ToReadableString(DateTime.Now.ToUniversalTime() - date);
+
+    public static string ToReadableString(TimeSpan span)
+    {
+        if (span.TotalHours < 24)
+            return Math.Round(span.TotalHours) + " hours ago";
+        else
+            return Math.Round(span.TotalDays) + " days ago";
+    }
+    }

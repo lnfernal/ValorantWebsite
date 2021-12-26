@@ -1,0 +1,151 @@
+﻿@page "/fakecollection"
+@inject ValorantService ValService
+@inject NavigationManager NavManager
+<PageTitle>Fake Collection</PageTitle>
+@using ValorantManager.Data
+@inject IJSRuntime JsRuntime
+
+<div class="alert alert-danger" role="alert">
+    <br />
+    Changing any of these skins will only show in collection and <strong>NOT</strong> ingame.<br /><br />
+</div>
+
+
+@if (ValService.user.loginState == LoginState.LoggedIn)
+{
+    <h1>Skins</h1>
+    @if (currentState == CurrentState.GunSelect)
+    {
+        <div style="margin:48px"></div>
+        <div class="card-group">
+            @foreach (var weapons in ValService.Weapons.data)
+            {
+                <div class="col-sm-3">
+                    <div class="card text-white m-1" style="height:auto;background:#484848">
+                        <div class="card-header text-center" style="font-size:small">@weapons.displayName</div>
+                        <div class="card-body text-center align-content-center">
+                            <img class="card-body card-img-top mx-auto text-center align-content-center" src="@ImageURLForGunSkin(weapons.uuid)" style="width:100%; height:100px; object-fit:contain">
+                            <a class="btn btn-outline-primary btn-sm " @onclick="(() => SelectSkin(weapons))">Select</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    @if (currentState == CurrentState.SkinSelect)
+    {
+        <p class="text-start">Select a skin for your @SelectedWeapon.displayName</p>
+        <div class="card-group">
+
+            @foreach (var skin in ValService.Weapons.data.First(x => x.uuid.Equals(SelectedWeapon.uuid)).skins)
+            {
+                <div class="col-sm-3">
+                    <div class="card text-white m-1 text-center" style="background:#484848">
+                        <div class="card-header text-center" style="font-size:small">@skin.displayName</div>
+                        <div class="card-body text-center align-content-center">
+                            <img class="card-img-top mx-auto" src="@skin.chromas[0].fullRender" style="width:100%; height:100px; object-fit:contain">
+                            <div class="card-footer mx-auto text-center">
+                                <a class="btn btn-outline-primary btn-sm" @onclick="(() => SetSkin(skin))">Select</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    <div class="@AlertClass" role="alert" style="position: fixed; bottom:0; right:0">
+        @AlertMsg
+    </div>
+
+
+
+    <style>
+
+        .AlertDefault {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .AlertFadeOut {
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s 2s, opacity 2s linear;
+        }
+    </style>
+}
+@code {
+    private JsonModels.Buddies.Datum RemoveBuddy = new JsonModels.Buddies.Datum() { uuid = null, displayName = "Remove Buddy", displayIcon = "https://cdn.proswapper.xyz/NoBuddyXIcon.png" };
+
+
+    private enum CurrentState
+    {
+        GunSelect,
+        SkinSelect
+    }
+
+    private CurrentState currentState = CurrentState.GunSelect;
+
+    private JsonModels.Loadout.Root? currentLoadout { get; set; } = null;
+
+    private string ImageURLForGunSkin(string GunID)
+    {
+        if (currentLoadout == null)
+            currentLoadout = ValService.GetLoadout();
+
+        foreach (var weapon in currentLoadout.Guns)
+        {
+            if (weapon.ID == GunID)//Much faster doing this but may break but whatever :)
+                return $"https://media.valorant-api.com/weaponskinchromas/{weapon.ChromaID}/fullrender.png";
+        }
+        return "";
+    }
+
+    private JsonModels.Weapons.Datum? SelectedWeapon { get; set; } = null;
+
+    private void SelectSkin(JsonModels.Weapons.Datum WeaponUUID)
+    {
+        currentState = CurrentState.SkinSelect;
+        SelectedWeapon = WeaponUUID;
+        JsRuntime.InvokeVoidAsync("OnScrollEvent");
+    }
+
+    private string AlertClass = "";
+    private string AlertMsg = "";
+
+    private async Task SetSkin(JsonModels.Weapons.Skin Skin)
+    {
+        try
+        {
+            JsonModels.Loadout.Root tmpLoadout = ValService.GetLoadout();
+            int index = tmpLoadout.Guns.FindIndex(x => x.ID.Equals(SelectedWeapon.uuid));
+
+            tmpLoadout.Guns[index].SkinID = Skin.uuid;
+            tmpLoadout.Guns[index].SkinLevelID = Skin.levels[0].uuid;
+            tmpLoadout.Guns[index].ChromaID = Skin.chromas[0].uuid;
+            if (ValService.SetPlayerLoadout(tmpLoadout))
+            {
+                currentLoadout = tmpLoadout;
+                currentState = CurrentState.GunSelect;
+                AlertMsg = $"Successfully set {SelectedWeapon.displayName}'s skin to {Skin.displayName}";
+                AlertClass = "alert alert-success AlertDefault";
+                await Task.Delay(3000);
+                AlertClass = "alert alert-success AlertFadeOut";
+            }
+
+        }
+        catch (Exception ex)
+        {
+            AlertMsg = ex.Message;
+            AlertClass = "alert alert-danger AlertDefault";
+            await Task.Delay(5000);
+            AlertClass = "alert alert-danger AlertFadeOut";
+        }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (ValService.user.loginState != LoginState.LoggedIn)
+            NavManager.NavigateTo("/");
+    }
+    }

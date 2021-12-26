@@ -1,0 +1,104 @@
+﻿@page "/profile"
+@using QRCoder
+@using System.Drawing;
+@using System.Drawing.Imaging;
+@using ValorantManager.Data
+@using ValorantManager.JsonModels;
+@using Microsoft.AspNetCore.Components;
+@using static QRCoder.PayloadGenerator
+@inject ValorantService ValService
+@inject NavigationManager NavManager
+
+<PageTitle>Profile | @ValService.user.Name</PageTitle>
+
+@if (ValService.user.loginState == LoginState.LoggedIn)
+{
+    <h1>@ValService.user.Name's Profile</h1>
+    <p class="text-start text-wrap" style="width:80vw">
+        User Information:<br />
+        Account ID: @ValService.user.puuid <br />
+        Account Created On: @ValService.GetAccountCreationDate() (UTC) <br>
+        Valorant Points: @ValService.user.wallet.Balances.ValorantPoints <br />
+        Radianite: @ValService.user.wallet.Balances.Radianite <br />
+        Region: @ValService.user.region <br />
+        <br>
+        <ul class="list-group text-break" style="background:#484848;width:80vw">
+            <p class="text-left" style="padding-left:5px">Current Token:</p>
+            <li class="list-group-item kye_secret" style="background:#484848">@ValService.user.Token</li>
+            <p class="text-left" style="padding-left:5px">Current Entitlement:</p>
+            <li class="list-group-item kye_secret" style="background:#484848">@ValService.user.Entitlement</li>
+        </ul>
+
+    </p>
+    <button type="button" class="btn btn-primary" @onclick="@GetQRCode">Get QR Code to login to Pro Swapper Valorant on mobile</button>
+    @if (QRCode != null)
+    {
+        <p>
+            Log into Pro Swapper Valorant on mobile using the QR code below
+        </p>
+        <img src="@QRCode" style="height:300px; width:300px" />
+    }
+}
+
+<br />
+<br />
+<br />
+<div style="position: relative;"><img src="https://publisher.linkvertise.com/cdn/ads/LV-468x60/Unbendgfannt-1.jpg" frameborder="0" height="60" width="468"><a href="https://publisher.linkvertise.com/ac/86737" target="_blank" style="position: absolute; top: 0; bottom: 0; left: 0; right: 0;"></a></div>
+
+@code {
+
+
+    protected override void OnInitialized()
+    {
+        if (ValService.user.loginState == LoginState.LoggedIn)
+        {
+            if (ValService.user.wallet == null)
+                ValService.user.wallet = ValService.Store_GetWallet();
+        }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (ValService.user.loginState != LoginState.LoggedIn)
+            NavManager.NavigateTo("/");
+    }
+
+    private string QRCode { get; set; } = null;
+
+    private void GetQRCode()
+    {
+        if (QRCode != null)
+        {
+            return;
+        }
+        Url generator = new Url(NavManager.BaseUri + "?token=" + ValService.user.Token);
+        string payload = generator.ToString();
+
+        QRCodeGenerator qrGenerator = new QRCodeGenerator();
+        QRCodeData qrCodeData = qrGenerator.CreateQrCode(payload, QRCodeGenerator.ECCLevel.Q);
+        QRCode qrCode = new QRCode(qrCodeData);
+        Bitmap qrCodeAsBitmap = qrCode.GetGraphic(50);
+
+        System.IO.MemoryStream ms = new MemoryStream();
+        qrCodeAsBitmap.Save(ms, ImageFormat.Jpeg);
+        byte[] byteImage = ms.ToArray();
+        var SigBase64 = Convert.ToBase64String(byteImage); // Get Base64
+        QRCode = "data:image/png;base64, " + SigBase64;
+        StateHasChanged();
+    }
+    }
+
+
+<style>
+
+    .kye_secret:hover {
+        color: white;
+        text-shadow: 0 0 0px rgba(0,0,0,0);
+    }
+
+    .kye_secret {
+        color: transparent;
+        text-shadow: 0 0 5px rgba(255,255,255,0.2);
+    }
+
+</style>

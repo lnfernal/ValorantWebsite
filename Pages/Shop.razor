@@ -1,0 +1,101 @@
+﻿@page "/shop"
+@inject ValorantService ValService
+@inject NavigationManager NavManager
+<PageTitle>Shop</PageTitle>
+@using Microsoft.AspNetCore.Components
+@using ValorantManager.Data
+
+ @if (currentshop != null)
+{
+    <h1>Skin Offers</h1>
+
+    <p class="fs-3">@ShopTimeLeft(StoreFront.SkinsPanelLayout.SingleItemOffersRemainingDurationInSeconds) left</p>
+    <div class="card" style="width: 150px;background:transparent; position:relative; top:0px; right:0px; border:0;float:right;margin-top:-50px">
+        <ul class="list-group list-unstyled">
+            <li class="list-group-item" style="background:transparent; color:white;border:0">
+                <img src="https://media.valorant-api.com/currencies/85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741/displayicon.png" style="width:25px; height:25px" />
+                @ValService.user.wallet.Balances.ValorantPoints
+            </li>
+            <li class="list-group-item" style="background:transparent; color:white;border:0">
+                <img src="https://media.valorant-api.com/currencies/e59aa87c-4cbf-517a-5983-6e81511be9b7/displayicon.png" style="width:25px; height:25px" />
+                @ValService.user.wallet.Balances.Radianite
+            </li>
+        </ul>
+    </div>
+    <br />
+    <br />
+
+
+    <div class="card-group">
+
+        @foreach (var weapons in currentshop)
+        {
+            <div class="col-sm-3">
+                <div class="card text-white m-1" style="height:auto; background:#484848">
+                    <div class="card-header text-center" style="font-size:small">@weapons.displayName</div>
+                    <div class="card-body text-center align-content-center">
+                        <img class="card-body card-img-top mx-auto text-center align-content-center" src="@weapons.displayIcon" style="width:100%; height:100px; object-fit:contain">
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code
+{
+
+    private JsonModels.StoreFrontV2.Root StoreFront { get; set; } = null;
+
+    private List<JsonModels.Weapons.Level> currentshop { get; set; } = null;
+
+    List<JsonModels.Weapons.Level> GetShop()
+    {
+        StoreFront = ValService.Store_GetStorefrontV2();
+        List<JsonModels.Weapons.Level> shopItems = new List<JsonModels.Weapons.Level>();
+        if (StoreFront != null)
+        {
+            foreach (string WeaponLevelUUID in StoreFront.SkinsPanelLayout.SingleItemOffers)
+            {
+                for (var i = 0; i < ValService.Weapons.data.Count; i++)
+                {
+                    foreach (var skin in ValService.Weapons.data[i].skins)
+                    {
+                        if (WeaponLevelUUID == skin.levels[0].uuid)
+                            shopItems.Add(skin.levels[0]);
+                    }
+                }
+
+            }
+        }
+        return shopItems;
+    }
+
+    public string ShopTimeLeft(int secondsLeft)
+    {
+        TimeSpan t = TimeSpan.FromSeconds(secondsLeft);
+
+        return t.ToString("h'h 'm'm 's's'");
+    }
+
+
+    protected override void OnInitialized()
+    {
+        if (ValService.user.loginState == LoginState.LoggedIn)
+        {
+            if (currentshop == null)
+            {
+                currentshop = GetShop();
+            }
+
+            if (ValService.user.wallet == null)
+                ValService.user.wallet = ValService.Store_GetWallet();
+        }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (ValService.user.loginState != LoginState.LoggedIn)
+            NavManager.NavigateTo("/");
+    }
+}

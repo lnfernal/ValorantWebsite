@@ -1,0 +1,14 @@
+D:\Visual Studio Projects\ValorantManager\obj\Release\net6.0\PubTmp\Out\ValorantManager.exe
+D:\Visual Studio Projects\ValorantManager\obj\Release\net6.0\PubTmp\Out\appsettings.Development.json
+D:\Visual Studio Projects\ValorantManager\obj\Release\net6.0\PubTmp\Out\appsettings.json
+D:\Visual Studio Projects\ValorantManager\obj\Release\net6.0\PubTmp\Out\JsonData\competitivetiers.json
+D:\Visual Studio Projects\ValorantManager\obj\Release\net6.0\PubTmp\Out\ValorantManager.dll
+D:\Visual Studio Projects\ValorantManager\obj\Release\net6.0\PubTmp\Out\ValorantManager.deps.json
+D:\Visual Studio Projects\ValorantManager\obj\Release\net6.0\PubTmp\Out\ValorantManager.runtimeconfig.json
+D:\Visual Studio Projects\ValorantManager\obj\Release\net6.0\PubTmp\Out\ValorantManager.pdb
+D:\Visual Studio Projects\ValorantManager\obj\Release\net6.0\PubTmp\Out\Microsoft.Win32.SystemEvents.dll
+D:\Visual Studio Projects\ValorantManager\obj\Release\net6.0\PubTmp\Out\QRCoder.dll
+D:\Visual Studio Projects\ValorantManager\obj\Release\net6.0\PubTmp\Out\System.Drawing.Common.dll
+D:\Visual Studio Projects\ValorantManager\obj\Release\net6.0\PubTmp\Out\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+D:\Visual Studio Projects\ValorantManager\obj\Release\net6.0\PubTmp\Out\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+D:\Visual Studio Projects\ValorantManager\obj\Release\net6.0\PubTmp\Out\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll

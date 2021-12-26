@@ -1,0 +1,135 @@
+﻿@page "/currentgame"
+@inject ValorantService ValService
+@inject NavigationManager NavManager
+<PageTitle>Current Game</PageTitle>
+@using ValorantManager.Data
+
+
+<h1>Current Game</h1>
+
+
+@if (IsLoading)
+{
+    <strong>Fetching Current Game... (This can take up to 10 seconds)</strong>
+    <div class="spinner-border text-danger" role="status"></div>
+    <br />
+    <br />
+    <br />
+}
+
+@if (!IsInGame && !IsLoading)
+{
+    <p class="text">You are currently not in a match.</p>
+}
+else if (fetchmatch != null)
+{
+    <p class="text-start">@GameLength</p>
+    <p class="text-start">Match ID: @fetchmatch.MatchID</p>
+
+
+    <table class="table table-dark table-bordered">
+        <thead>
+            <tr>
+                <th style="width:3%" scope="col">Agent</th>
+                <th style="width:3%" scope="col">Name</th>
+                <th style="width:1%" scope="col">Level</th>
+                <th style="width:1%" scope="col">Elo</th>
+                <th style="width:2%" scope="col">Rank</th>
+                <th style="width:2%" scope="col">Peak Rank</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var player in PlayerList)
+            {
+                <tr>
+                    @SetTableColor(player.Key.TeamID)
+                    <td style="background:@TableColor"><img src=@CharacterIDToIcon(player.Key.CharacterID) style="width:5vw;height:auto">@CharacterIDToName(player.Key.CharacterID)</td>
+                    <td style="background:@TableColor">@player.Value.Name</td>
+                    <td style="background:@TableColor">@player.Key.PlayerIdentity.AccountLevel</td>
+                    <td style="background:@TableColor">@player.Value.Elo</td>
+                    <td style="background:@TableColor"><img src=@player.Value.RankIMGURL style="width:25%">@player.Value.RankName</td>
+                    <td style="background:@TableColor"><img src=@player.Value.Peak_RankIMGURL style="width:25%">@player.Value.Peak_RankName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+}
+<button type="button" class="btn btn-primary" @onclick="Refresh">Refresh</button>
+
+@code {
+    bool IsLoading = false;
+
+    string TableColor = "";
+
+    string SetTableColor(string TeamID)
+    {
+        if (TeamID == fetchmatch.Players.First(x => x.Subject.Equals(ValService.user.puuid)).TeamID)
+        {
+            TableColor = "#416e7f";//Is on our team
+        }
+        else
+        {
+            TableColor = "#895368";//Is enemy
+        }
+
+        return string.Empty;
+    }
+
+    bool IsInGame = false;
+    string GameLength = "";
+    private JsonModels.CoreGame_FetchPlayer.Root coregame = null;
+    private JsonModels.CoreGame_FetchMatch.Root fetchmatch = null;
+    private Dictionary<JsonModels.CoreGame_FetchMatch.Player, ValorantService.PlayerGameInfo> PlayerList = new();
+
+    private async void Refresh()
+    {
+        IsLoading = true;
+        await InvokeAsync(StateHasChanged);
+        coregame = ValService.CoreGame_FetchPlayer();
+
+        if (coregame != null)
+        {
+            PlayerList.Clear();
+            DateTimeOffset gamestartTime = DateTimeOffset.FromUnixTimeMilliseconds(coregame.GameStartEpochms);
+
+            TimeSpan ts = DateTime.UtcNow - gamestartTime;
+
+            GameLength = $"Current Game Length: {Math.Round(ts.TotalMinutes)} minutes";
+            fetchmatch = ValService.CoreGame_FetchMatch(coregame.MatchID);
+            var tasks = new List<Task>();
+
+            var pinfoList = ValService.GetPlayerInfo(fetchmatch.Players.Select(x => x.Subject).ToArray());
+
+            foreach (var player in fetchmatch.Players)
+            {
+                PlayerList.Add(player, pinfoList.First(x => x.ID.Equals(player.Subject)));
+            }
+
+            IsInGame = true;
+
+        }
+        else
+            IsInGame = false;
+
+
+        IsLoading = false;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    string CharacterIDToIcon(string CharacterID) => ValService.Agents.Data.First(x => x.Uuid.ToLower().Equals(CharacterID.ToLower())).KillfeedPortrait;
+    string CharacterIDToName(string CharacterID) => ValService.Agents.Data.First(x => x.Uuid.ToLower().Equals(CharacterID.ToLower())).DisplayName;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (ValService.user.loginState != LoginState.LoggedIn)
+            NavManager.NavigateTo("/");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Run(() => Refresh());
+    }
+}
+
