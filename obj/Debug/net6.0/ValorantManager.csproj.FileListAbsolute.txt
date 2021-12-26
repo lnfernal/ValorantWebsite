@@ -34,3 +34,39 @@ D:\Visual Studio Projects\ValorantManager\obj\Debug\net6.0\ValorantManager.genru
 D:\Visual Studio Projects\ValorantManager\obj\Debug\net6.0\ValorantManager.csproj.AssemblyReference.cache
 D:\Visual Studio Projects\ValorantManager\bin\Debug\net6.0\JsonData\competitivetiers.json
 D:\Visual Studio Projects\ValorantManager\bin\Debug\net6.0\RestSharp.dll
+C:\Users\ProMa\Documents\GitHub\ValorantManager\bin\Debug\net6.0\appsettings.Development.json
+C:\Users\ProMa\Documents\GitHub\ValorantManager\bin\Debug\net6.0\appsettings.json
+C:\Users\ProMa\Documents\GitHub\ValorantManager\bin\Debug\net6.0\JsonData\competitivetiers.json
+C:\Users\ProMa\Documents\GitHub\ValorantManager\bin\Debug\net6.0\ValorantManager.staticwebassets.runtime.json
+C:\Users\ProMa\Documents\GitHub\ValorantManager\bin\Debug\net6.0\ValorantManager.exe
+C:\Users\ProMa\Documents\GitHub\ValorantManager\bin\Debug\net6.0\ValorantManager.deps.json
+C:\Users\ProMa\Documents\GitHub\ValorantManager\bin\Debug\net6.0\ValorantManager.runtimeconfig.json
+C:\Users\ProMa\Documents\GitHub\ValorantManager\bin\Debug\net6.0\ValorantManager.dll
+C:\Users\ProMa\Documents\GitHub\ValorantManager\bin\Debug\net6.0\ref\ValorantManager.dll
+C:\Users\ProMa\Documents\GitHub\ValorantManager\bin\Debug\net6.0\ValorantManager.pdb
+C:\Users\ProMa\Documents\GitHub\ValorantManager\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\ProMa\Documents\GitHub\ValorantManager\bin\Debug\net6.0\QRCoder.dll
+C:\Users\ProMa\Documents\GitHub\ValorantManager\bin\Debug\net6.0\RestSharp.dll
+C:\Users\ProMa\Documents\GitHub\ValorantManager\bin\Debug\net6.0\System.Drawing.Common.dll
+C:\Users\ProMa\Documents\GitHub\ValorantManager\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\ProMa\Documents\GitHub\ValorantManager\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+C:\Users\ProMa\Documents\GitHub\ValorantManager\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Debug\net6.0\ValorantManager.csproj.AssemblyReference.cache
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Debug\net6.0\ValorantManager.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Debug\net6.0\ValorantManager.AssemblyInfoInputs.cache
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Debug\net6.0\ValorantManager.AssemblyInfo.cs
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Debug\net6.0\ValorantManager.csproj.CoreCompileInputs.cache
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Debug\net6.0\ValorantManager.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Debug\net6.0\ValorantManager.RazorAssemblyInfo.cache
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Debug\net6.0\ValorantManager.RazorAssemblyInfo.cs
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Debug\net6.0\scopedcss\Shared\MainLayout.razor.rz.scp.css
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Debug\net6.0\scopedcss\Shared\NavMenu.razor.rz.scp.css
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Debug\net6.0\scopedcss\bundle\ValorantManager.styles.css
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Debug\net6.0\scopedcss\projectbundle\ValorantManager.bundle.scp.css
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Debug\net6.0\ValorantManager.csproj.CopyComplete
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Debug\net6.0\ValorantManager.dll
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Debug\net6.0\ref\ValorantManager.dll
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Debug\net6.0\ValorantManager.pdb
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Debug\net6.0\ValorantManager.genruntimeconfig.cache

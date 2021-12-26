@@ -17,24 +17,50 @@
 <PageTitle>Pro Swapper Valorant</PageTitle>
 
 <h1>Welcome to Pro Swapper Valorant</h1>
+<h6 class="alert alert-success" role="alert">
+    Note: We do NOT store any user information such as usernames, passwords or tokens. Riot Games emails the inbox with a one time password when changing passwords so we cannot change your password.
+</h6>
 
 @if (valService.user.loginState == LoginState.LoggedOut || valService.user.loginState == LoginState.WrongLogin)
 {
-    <p>Please login via your Valorant Token. Learn <a target="_blank" href="https://github.com/Pro-Swapper/ValorantGuide/blob/main/GettingToken.md">here</a> to get your Valorant token.</p>
-    <br />
-    <label class="font-weight-bold">Valorant Account Token:</label>
-    <EditForm Model="@valService.user">
-        <InputText class="form-control" style="width:30vw" @bind-Value="valService.user.Token" placeholder="xxxx" />
-    </EditForm>
+    <p>Please choose your login method:</p>
 
-    <br>
-    <br>
-    <EditForm Model="@valService.user">
-        <label class="font-weight-bold">Valorant Account Login:</label>
-        <InputText class="form-control" style="width:30vw" @bind-Value="valService.user.auth_username" placeholder="Username" />
-        <br>
-        <InputText class="form-control" style="width:30vw" @bind-Value="valService.user.auth_password" placeholder="Password" />
-    </EditForm>
+
+    @if (loginType != LoginType.UserPass)
+    {
+        <button class="btn btn-primary" @onclick="() => SetLoginType(LoginType.UserPass)">Login with Username & Password</button>
+        <br />
+        <br />
+    }
+
+    @if (loginType != LoginType.Token)
+    {
+        <button class="btn btn-primary" @onclick="() => SetLoginType(LoginType.Token)">Login with Token</button>
+        <br />
+        <br />
+    }
+
+
+    @if (loginType == LoginType.Token)
+    {
+        <p>Please login via your Valorant Token. Learn <a target="_blank" href="https://github.com/Pro-Swapper/ValorantGuide/blob/main/GettingToken.md">here</a> to get your Valorant token.</p>
+        <label class="font-weight-bold">Valorant Account Token:</label>
+        <EditForm Model="@valService.user">
+            <InputText class="form-control" style="width:30vw" @bind-Value="valService.user.Token" placeholder="xxxx" />
+        </EditForm>
+    }
+
+
+    @if (loginType == LoginType.UserPass)
+    {
+        <EditForm Model="@valService.user">
+            <label class="font-weight-bold">Valorant Account Login:</label>
+            <InputText class="form-control" style="width:30vw" @bind-Value="valService.user.auth_username" placeholder="Username" />
+            <br>
+            <InputText type="password" class="form-control" style="width:30vw" @bind-Value="valService.user.auth_password" placeholder="Password" />
+        </EditForm>
+    }
+
 
     <EditForm Model="@valService.user">
         <br />
@@ -117,12 +143,29 @@
     <div class="list-group-item text-break" style="font-size:small;background:#c62828;color:white;width:40vw;border-radius:13px">We are not affiliated, associated, authorized, endorsed by, or in any way officially connected with VALORANT or Riot Games, Inc.</div>
 </footer>
 @code {
+
+    enum LoginType
+    {
+        None,
+        UserPass,
+        Token
+    }
+    LoginType loginType = LoginType.None;
+
     protected async override void OnInitialized()
     {
         if (valService.user.loginState != LoginState.LoggedIn)
         {
             valService.user = new User();
         }
+    }
+
+    private async Task SetLoginType(LoginType loginT)
+    {
+        loginType = loginT;
+
+
+        await InvokeAsync(StateHasChanged);
     }
 
 

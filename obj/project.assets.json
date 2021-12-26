@@ -210,11 +210,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Visual Studio Projects\\ValorantManager\\ValorantManager.csproj",
+      "projectUniqueName": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\ValorantManager.csproj",
       "projectName": "ValorantManager",
-      "projectPath": "D:\\Visual Studio Projects\\ValorantManager\\ValorantManager.csproj",
+      "projectPath": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\ValorantManager.csproj",
       "packagesPath": "C:\\Users\\ProMa\\.nuget\\packages\\",
-      "outputPath": "D:\\Visual Studio Projects\\ValorantManager\\obj\\",
+      "outputPath": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

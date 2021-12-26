@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "R5EPfNwVr2+hqMDObjhrB2hmD9wTwLWenugn55KoZ/Pu8QUwgKTIDU5P6n72WieZ5C6Q7lnVlw05tkh2zcOV2w==",
+  "dgSpecHash": "CNokgV07yAZUTpNzXCWqxMLdSdNb6VRuEI7OhY4cyCabW0oKc3twuitBL5qQbgtvdKZf+BQqndPSwNilT3J4Nw==",
   "success": true,
-  "projectFilePath": "D:\\Visual Studio Projects\\ValorantManager\\ValorantManager.csproj",
+  "projectFilePath": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\ValorantManager.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ProMa\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\ProMa\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
