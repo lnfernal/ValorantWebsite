@@ -1,0 +1,15 @@
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Release\net6.0\PubTmp\Out\ValorantManager.exe
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Release\net6.0\PubTmp\Out\appsettings.Development.json
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Release\net6.0\PubTmp\Out\appsettings.json
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Release\net6.0\PubTmp\Out\JsonData\competitivetiers.json
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Release\net6.0\PubTmp\Out\ValorantManager.dll
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Release\net6.0\PubTmp\Out\ValorantManager.deps.json
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Release\net6.0\PubTmp\Out\ValorantManager.runtimeconfig.json
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Release\net6.0\PubTmp\Out\ValorantManager.pdb
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Release\net6.0\PubTmp\Out\Microsoft.Win32.SystemEvents.dll
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Release\net6.0\PubTmp\Out\QRCoder.dll
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Release\net6.0\PubTmp\Out\RestSharp.dll
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Release\net6.0\PubTmp\Out\System.Drawing.Common.dll
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Release\net6.0\PubTmp\Out\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Release\net6.0\PubTmp\Out\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Release\net6.0\PubTmp\Out\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
