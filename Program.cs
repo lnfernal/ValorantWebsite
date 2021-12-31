@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<ValorantService>();
+builder.Services.AddScoped<ICookie, Cookie>();
 builder.Services.AddHttpClient();
 
 var app = builder.Build();

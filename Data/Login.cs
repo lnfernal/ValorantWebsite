@@ -13,8 +13,6 @@ namespace ValorantManager.Data
 
     public class User
     {
-        
-
         public string auth_username { get; set; }
         public string auth_password { get; set; }
         public string Name { get; set; }
@@ -28,6 +26,8 @@ namespace ValorantManager.Data
         public Wallet.Rootobject wallet { get; set; } = null;
 
         public User()
-        { }
+        {
+            loginState = LoginState.LoggedOut;
+        }
     }
 }

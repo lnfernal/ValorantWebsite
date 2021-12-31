@@ -16,7 +16,7 @@ namespace ValorantManager.Services
 
         public event Action OnChange;
         private void LoginStateChanged() => OnChange.Invoke();
-        public User user { get; set; } = new User() { loginState = LoginState.LoggedOut };
+        public User user { get; set; } = new User() { loginState = LoginState.LoggedOut};
 
         //public void Login()
         //{
@@ -92,8 +92,6 @@ namespace ValorantManager.Services
 
         public void Logout()
         {
-            user.Token = null;
-            user.loginState = LoginState.LoggedOut;
             user = new();
             LoginStateChanged();
         }

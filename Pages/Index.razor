@@ -5,13 +5,14 @@
 @using System.Web;
 @using ValorantManager.JsonModels;
 @using ValorantManager.Shared;
+@using ValorantManager.Util;
 @using Microsoft.AspNetCore.WebUtilities
 @using System.Text;
 @inject ValorantService valService
 @inject NavigationManager NavManager
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @inject ProtectedSessionStorage ProtectedSessionStore
-
+@inject ICookie cookie
 @page "/"
 
 <PageTitle>Pro Swapper Valorant</PageTitle>
@@ -144,6 +145,8 @@
 </footer>
 @code {
 
+
+    private const string SplitKey = "kdsjakDASD77a8dAHSDUASHDA787KAODASD*as7dasdhASD";
     enum LoginType
     {
         None,
@@ -152,13 +155,56 @@
     }
     LoginType loginType = LoginType.None;
 
-    protected async override void OnInitialized()
+    protected async override Task OnAfterRenderAsync(bool firstRender)
     {
-        if (valService.user.loginState != LoginState.LoggedIn)
+
+        bool PreLogin = false;
+
+        var urlToken = NavManager.ToAbsoluteUri(NavManager.Uri);
+        PreLogin = QueryHelpers.ParseQuery(urlToken.Query).TryGetValue("token", out var _);
+
+        var SessionToken = await ProtectedSessionStore.GetAsync<string>("token");
+        PreLogin = SessionToken.Value != null;
+
+        var CookieToken = await cookie.GetValue("data");
+        PreLogin = CookieToken.Length > 1;
+
+        if (PreLogin && firstRender && valService.user.loginState != LoginState.LoggedIn)
         {
-            valService.user = new User();
+            valService.user.loginState = LoginState.LoggingIn;
+            await InvokeAsync(StateHasChanged);
+            StateHasChanged();
+
+
+            //Methods for logging in
+
+
+            if (QueryHelpers.ParseQuery(urlToken.Query).TryGetValue("token", out var OutToken))
+            {
+                valService.user.Token = Convert.ToString(OutToken);
+            }
+            else if (SessionToken.Value != null)
+            {
+                 valService.user.Token = SessionToken.Value;
+            }
+            else if (CookieToken.Length > 1)
+            {
+                    string[] decoded = CookieToken.Base64Decode().Split(new string[] { SplitKey }, StringSplitOptions.None);
+                    valService.user.auth_username = decoded[0];
+                    valService.user.auth_password = decoded[1];
+                    loginType = LoginType.UserPass;
+            }
+
+            await InvokeAsync(StateHasChanged);
+            await Task.Run(() => LoginButton());
+
         }
     }
+        
+
+
+    
+    
 
     private async Task SetLoginType(LoginType loginT)
     {
@@ -169,45 +215,17 @@
     }
 
 
-    protected async override Task OnAfterRenderAsync(bool firstRender)
-    {
-
-        if (valService.user.loginState != LoginState.LoggedIn)
-        {
-            var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
-            if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("token", out var OutToken))
-            {
-                valService.user.Token = Convert.ToString(OutToken);
-                await Task.Run(() => LoginButton());
-                StateHasChanged();
-            }
-            else
-            {
-                var tkn = await ProtectedSessionStore.GetAsync<string>("token");
-                if (tkn.Value != null)
-                {
-                    if (valService.user.Token == null)
-                    {
-                        valService.user.Token = tkn.Value;
-                        valService.user.loginState = LoginState.LoggingIn;
-                        await InvokeAsync(StateHasChanged);
-                        await Task.Run(() => LoginButton());
-                    }
-                }
-            }
-        }
-    }
-
-
     private async Task LoginButton()
     {
-        valService.user.loginState = LoginState.LoggingIn;
-
-        if (valService.user.auth_username != null && valService.user.auth_password != null)
+        
+        if (loginType == LoginType.UserPass)
         {
             try
             {
                 valService.user.Token = UserPassLogin.Login(valService.user.auth_username, valService.user.auth_password);
+
+                await cookie.SetValue("data", (valService.user.auth_username + SplitKey + valService.user.auth_password).Base64Encode(), 30);
+                
             }
             catch
             {
@@ -244,4 +262,4 @@
         else
             return Math.Round(span.TotalDays) + " days ago";
     }
-    }
+}

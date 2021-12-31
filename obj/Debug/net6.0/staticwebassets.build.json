@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "60YkFBz4fN0+9CWVublYQLQEmYxquwrKoG2GgCEJ5Qc=",
+  "Hash": "UDK+jsLp+Rq3AvhBbWYbT35AP4N36VlU1k/k+icPY6I=",
   "Source": "ValorantManager",
   "BasePath": "_content/ValorantManager",
   "Mode": "Default",
@@ -287,6 +287,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\splash.png",
+      "SourceId": "ValorantManager",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\",
+      "BasePath": "_content/ValorantManager",
+      "RelativePath": "splash.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\splash.png"
     }
   ]
 }
