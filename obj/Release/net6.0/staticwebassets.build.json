@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "kCk/PR3iCu/JE7UhqzXYZhtksVWs15HStXQLwCqgniA=",
+  "Hash": "nTHzsG9HlQV0/FdDTFDtpQ9ybJVmynqTKM1TZZMMKJ0=",
   "Source": "ValorantManager",
   "BasePath": "_content/ValorantManager",
   "Mode": "Default",
@@ -10,17 +10,17 @@
     {
       "Name": "ValorantManager\\wwwroot",
       "Source": "ValorantManager",
-      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\",
       "BasePath": "_content/ValorantManager",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\obj\\Release\\net6.0\\scopedcss\\bundle\\ValorantManager.styles.css",
+      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\obj\\Release\\net6.0\\scopedcss\\bundle\\ValorantManager.styles.css",
       "SourceId": "ValorantManager",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\obj\\Release\\net6.0\\scopedcss\\bundle\\",
+      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\obj\\Release\\net6.0\\scopedcss\\bundle\\",
       "BasePath": "_content/ValorantManager",
       "RelativePath": "ValorantManager.styles.css",
       "AssetKind": "All",
@@ -31,13 +31,13 @@
       "AssetTraitValue": "ApplicationBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\obj\\Release\\net6.0\\scopedcss\\bundle\\ValorantManager.styles.css"
+      "OriginalItemSpec": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\obj\\Release\\net6.0\\scopedcss\\bundle\\ValorantManager.styles.css"
     },
     {
-      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\obj\\Release\\net6.0\\scopedcss\\projectbundle\\ValorantManager.bundle.scp.css",
+      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\obj\\Release\\net6.0\\scopedcss\\projectbundle\\ValorantManager.bundle.scp.css",
       "SourceId": "ValorantManager",
       "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\obj\\Release\\net6.0\\scopedcss\\projectbundle\\",
+      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\obj\\Release\\net6.0\\scopedcss\\projectbundle\\",
       "BasePath": "_content/ValorantManager",
       "RelativePath": "ValorantManager.bundle.scp.css",
       "AssetKind": "All",
@@ -48,13 +48,30 @@
       "AssetTraitValue": "ProjectBundle",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\obj\\Release\\net6.0\\scopedcss\\projectbundle\\ValorantManager.bundle.scp.css"
+      "OriginalItemSpec": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\obj\\Release\\net6.0\\scopedcss\\projectbundle\\ValorantManager.bundle.scp.css"
     },
     {
-      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\app_icon.png",
       "SourceId": "ValorantManager",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\",
+      "BasePath": "_content/ValorantManager",
+      "RelativePath": "app_icon.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\app_icon.png"
+    },
+    {
+      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "SourceId": "ValorantManager",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\",
       "BasePath": "_content/ValorantManager",
       "RelativePath": "css/bootstrap/bootstrap.min.css",
       "AssetKind": "All",
@@ -68,10 +85,10 @@
       "OriginalItemSpec": "wwwroot\\css\\bootstrap\\bootstrap.min.css"
     },
     {
-      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
       "SourceId": "ValorantManager",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\",
       "BasePath": "_content/ValorantManager",
       "RelativePath": "css/bootstrap/bootstrap.min.css.map",
       "AssetKind": "All",
@@ -85,10 +102,10 @@
       "OriginalItemSpec": "wwwroot\\css\\bootstrap\\bootstrap.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
+      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
       "SourceId": "ValorantManager",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\",
       "BasePath": "_content/ValorantManager",
       "RelativePath": "css/open-iconic/font/css/open-iconic-bootstrap.min.css",
       "AssetKind": "All",
@@ -102,10 +119,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css"
     },
     {
-      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
+      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot",
       "SourceId": "ValorantManager",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\",
       "BasePath": "_content/ValorantManager",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.eot",
       "AssetKind": "All",
@@ -119,10 +136,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.eot"
     },
     {
-      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
+      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf",
       "SourceId": "ValorantManager",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\",
       "BasePath": "_content/ValorantManager",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.otf",
       "AssetKind": "All",
@@ -136,10 +153,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.otf"
     },
     {
-      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
+      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg",
       "SourceId": "ValorantManager",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\",
       "BasePath": "_content/ValorantManager",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.svg",
       "AssetKind": "All",
@@ -153,10 +170,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.svg"
     },
     {
-      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
+      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf",
       "SourceId": "ValorantManager",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\",
       "BasePath": "_content/ValorantManager",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.ttf",
       "AssetKind": "All",
@@ -170,10 +187,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.ttf"
     },
     {
-      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
+      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff",
       "SourceId": "ValorantManager",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\",
       "BasePath": "_content/ValorantManager",
       "RelativePath": "css/open-iconic/font/fonts/open-iconic.woff",
       "AssetKind": "All",
@@ -187,10 +204,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff"
     },
     {
-      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
+      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
       "SourceId": "ValorantManager",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\",
       "BasePath": "_content/ValorantManager",
       "RelativePath": "css/open-iconic/FONT-LICENSE",
       "AssetKind": "All",
@@ -204,10 +221,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\FONT-LICENSE"
     },
     {
-      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
+      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\css\\open-iconic\\ICON-LICENSE",
       "SourceId": "ValorantManager",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\",
       "BasePath": "_content/ValorantManager",
       "RelativePath": "css/open-iconic/ICON-LICENSE",
       "AssetKind": "All",
@@ -221,10 +238,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\ICON-LICENSE"
     },
     {
-      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\css\\open-iconic\\README.md",
+      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\css\\open-iconic\\README.md",
       "SourceId": "ValorantManager",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\",
       "BasePath": "_content/ValorantManager",
       "RelativePath": "css/open-iconic/README.md",
       "AssetKind": "All",
@@ -238,10 +255,10 @@
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\README.md"
     },
     {
-      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\css\\site.css",
+      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\css\\site.css",
       "SourceId": "ValorantManager",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\",
       "BasePath": "_content/ValorantManager",
       "RelativePath": "css/site.css",
       "AssetKind": "All",
@@ -255,10 +272,10 @@
       "OriginalItemSpec": "wwwroot\\css\\site.css"
     },
     {
-      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\favicon.ico",
+      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\favicon.ico",
       "SourceId": "ValorantManager",
       "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\",
       "BasePath": "_content/ValorantManager",
       "RelativePath": "favicon.ico",
       "AssetKind": "All",
@@ -270,6 +287,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\splash.png",
+      "SourceId": "ValorantManager",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\.Pro_Swapper\\ValorantWebsite\\wwwroot\\",
+      "BasePath": "_content/ValorantManager",
+      "RelativePath": "splash.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\splash.png"
     }
   ]
 }
