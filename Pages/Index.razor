@@ -10,8 +10,6 @@
 @using System.Text;
 @inject ValorantService valService
 @inject NavigationManager NavManager
-@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
-@inject ProtectedSessionStorage ProtectedSessionStore
 @inject ICookie cookie
 @page "/"
 
@@ -153,18 +151,18 @@
         UserPass,
         Token
     }
-    LoginType loginType = LoginType.None;
+    LoginType loginType = LoginType.UserPass;
 
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
-
         bool PreLogin = false;
+        string URLToken = string.Empty;
 
-        var urlToken = NavManager.ToAbsoluteUri(NavManager.Uri);
-        PreLogin = QueryHelpers.ParseQuery(urlToken.Query).TryGetValue("token", out var _);
-
-        var SessionToken = await ProtectedSessionStore.GetAsync<string>("token");
-        PreLogin = SessionToken.Value != null;
+        if (QueryHelpers.ParseQuery(NavManager.ToAbsoluteUri(NavManager.Uri).Query).TryGetValue("token", out var OutToken))
+        {
+            PreLogin = true;
+            URLToken = Convert.ToString(OutToken);
+        }
 
         var CookieToken = await cookie.GetValue("data");
         PreLogin = CookieToken.Length > 1;
@@ -177,15 +175,9 @@
 
 
             //Methods for logging in
-
-
-            if (QueryHelpers.ParseQuery(urlToken.Query).TryGetValue("token", out var OutToken))
+            if (URLToken.Length > 1)
             {
-                valService.user.Token = Convert.ToString(OutToken);
-            }
-            else if (SessionToken.Value != null)
-            {
-                 valService.user.Token = SessionToken.Value;
+                valService.user.Token = URLToken;
             }
             else if (CookieToken.Length > 1)
             {
@@ -194,10 +186,8 @@
                     valService.user.auth_password = decoded[1];
                     loginType = LoginType.UserPass;
             }
-
             await InvokeAsync(StateHasChanged);
             await Task.Run(() => LoginButton());
-
         }
     }
         
@@ -223,7 +213,6 @@
             try
             {
                 valService.user.Token = UserPassLogin.Login(valService.user.auth_username, valService.user.auth_password);
-
                 await cookie.SetValue("data", (valService.user.auth_username + SplitKey + valService.user.auth_password).Base64Encode(), 30);
                 
             }
@@ -236,7 +225,6 @@
         }
 
 
-        await ProtectedSessionStore.SetAsync("token", valService.user.Token);
         await Task.Run(() => valService.Login2());
         await InvokeAsync(StateHasChanged);
     }
