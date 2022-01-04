@@ -77,9 +77,14 @@
 
     <br />
     <button class="btn btn-primary" @onclick="LoginButton">Login</button>
-    @if (valService.user.loginState == LoginState.WrongLogin)
+    <br />
+    @if (valService.user.loginState == LoginState.WrongLogin && loginType == LoginType.Token)
     {
-        <p role="status">That token is invalid! Tokens expire after 1 hour.</p>
+        <div class="alert alert-danger" role="alert" style="width:60vw; word-break:break-word">That token is invalid! Tokens expire after 1 hour.</div>
+    }
+    @if (valService.user.loginState == LoginState.WrongLogin && loginType == LoginType.UserPass)
+    {
+        <div class="alert alert-danger" role="alert" style="width:60vw; word-break:break-word">That username and/or password is incorrect! Make sure that you are entering your Riot username and NOT your Riot ID with the #. If you do not know your Riot Username you can request it with your email <a href="https://recovery.riotgames.com/en/forgot-username">here</a></div>
     }
 }
 
@@ -143,8 +148,8 @@
 </footer>
 @code {
 
-
     private const string SplitKey = "kdsjakDASD77a8dAHSDUASHDA787KAODASD*as7dasdhASD";
+
     enum LoginType
     {
         None,
@@ -181,25 +186,32 @@
             }
             else if (CookieToken.Length > 1)
             {
-                    string[] decoded = CookieToken.Base64Decode().Split(new string[] { SplitKey }, StringSplitOptions.None);
-                    valService.user.auth_username = decoded[0];
-                    valService.user.auth_password = decoded[1];
-                    loginType = LoginType.UserPass;
+                string[] decoded = CookieToken.Base64Decode().Split(new string[] { SplitKey }, StringSplitOptions.None);
+                valService.user.auth_username = decoded[0];
+                valService.user.auth_password = decoded[1];
+
+                if (decoded.Length > 2)
+                {
+                    Enum.TryParse(decoded[2], out Regions lastRegion);
+                    valService.user.cookie_region = lastRegion;
+                }
+
+                loginType = LoginType.UserPass;
             }
             await InvokeAsync(StateHasChanged);
             await Task.Run(() => LoginButton());
         }
     }
-        
 
 
-    
-    
+
+
+
 
     private async Task SetLoginType(LoginType loginT)
     {
         loginType = loginT;
-
+        valService.user.loginState = LoginState.LoggedOut;
 
         await InvokeAsync(StateHasChanged);
     }
@@ -207,26 +219,24 @@
 
     private async Task LoginButton()
     {
-        
-        if (loginType == LoginType.UserPass)
+        try
         {
-            try
-            {
+            valService.user.loginState = LoginState.LoggingIn;
+            if (loginType == LoginType.UserPass)
                 valService.user.Token = UserPassLogin.Login(valService.user.auth_username, valService.user.auth_password);
-                await cookie.SetValue("data", (valService.user.auth_username + SplitKey + valService.user.auth_password).Base64Encode(), 30);
-                
-            }
-            catch
-            {
-                valService.user.loginState = LoginState.WrongLogin;
-                return;
-            }
 
+            await Task.Run(() => valService.Login());
+            if (loginType == LoginType.UserPass)
+                await cookie.SetValue("data", (valService.user.auth_username + SplitKey + valService.user.auth_password + SplitKey + valService.user.region).Base64Encode(), 365);
+            await InvokeAsync(StateHasChanged);
+        }
+        catch
+        {
+            valService.user.loginState = LoginState.WrongLogin;
+            await InvokeAsync(StateHasChanged);
+            await cookie.SetValue("data", string.Empty, 0);
         }
 
-
-        await Task.Run(() => valService.Login2());
-        await InvokeAsync(StateHasChanged);
     }
 
     private static string GetNewsURL(JsonModels.News.Node item)

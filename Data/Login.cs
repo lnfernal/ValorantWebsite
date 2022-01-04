@@ -20,6 +20,7 @@ namespace ValorantManager.Data
         public string Entitlement { get; set; }
         public string puuid { get; set; }
         public long CreationDate { get; set; }
+        public Regions cookie_region { get; set; } = Regions.Auto;
         public Regions region { get; set; }
         public LoginState loginState { get; set; }
 

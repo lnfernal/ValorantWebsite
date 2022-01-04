@@ -16,41 +16,9 @@ namespace ValorantManager.Services
 
         public event Action OnChange;
         private void LoginStateChanged() => OnChange.Invoke();
-        public User user { get; set; } = new User() { loginState = LoginState.LoggedOut};
+        public User user { get; set; } = new User() { loginState = LoginState.LoggedOut };
 
-        //public void Login()
-        //{
-        //    try
-        //    {
-        //        using (WebClient wc = new())
-        //        {
-        //            wc.Headers.Add(HttpRequestHeader.Authorization, $"Bearer {user.Token}");
-        //            string response = wc.DownloadString("https://auth.riotgames.com/userinfo");
-        //            UserInfo.Root userobj = JsonSerializer.Deserialize<UserInfo.Root>(response);
-        //            user.Name = $"{userobj.Acct.GameName}#{userobj.Acct.TagLine}";
-        //            user.puuid = userobj.Sub;
-        //            user.CreationDate = userobj.Acct.CreatedAt;
-
-
-        //            //entitlements
-        //            wc.Headers.Clear();//clear the headers so we can reuse the same webclient
-        //            wc.Headers.Add(HttpRequestHeader.Authorization, $"Bearer {user.Token}");
-        //            wc.Headers.Add(HttpRequestHeader.ContentType, "application/json");
-        //            user.Entitlement = JsonSerializer.Deserialize<JsonElement>(wc.UploadString("https://entitlements.auth.riotgames.com/api/token/v1", "")).GetProperty("entitlements_token").GetString();
-
-        //            if (user.region == Regions.Auto)
-        //                user.region = GetUserRegion(user);
-        //        }
-
-        //        user.loginState = LoginState.LoggedIn;
-        //    }
-        //    catch
-        //    {
-        //        user.loginState = LoginState.WrongLogin;
-        //    }
-        //}
-
-        public void Login2()
+        public void Login()
         {
             var LoginRequest = new HttpRequestMessage(HttpMethod.Get, "https://auth.riotgames.com/userinfo");
             LoginRequest.Headers.Add(AuthorizationHeader, $"Bearer {user.Token}");
@@ -75,11 +43,20 @@ namespace ValorantManager.Services
                     using var EnresponseStream = EntitlementResponse.Content.ReadAsStream();
                     user.Entitlement = JsonSerializer.Deserialize<JsonElement>(EnresponseStream).GetProperty("entitlements_token").GetString();
 
-
-                    if (user.region == Regions.Auto)
+                    if (user.cookie_region == Regions.Auto && user.region == Regions.Auto)
+                    {
+                        //No region stored
                         user.region = GetUserRegion(user);
+                        user.cookie_region = user.region;
+                    }
+                    else
+                    {
+                        //Region stored from cookies
+                        user.region = user.cookie_region;
+                    }
 
                     user.loginState = LoginState.LoggedIn;
+
                 }
                 else
                     user.loginState = LoginState.WrongLogin;
@@ -325,7 +302,7 @@ namespace ValorantManager.Services
 
         public Wallet.Rootobject Store_GetWallet()//Get the currently available items in the store
         {
-            using (WebClient wc = new WebClient())
+            using (WebClient wc = new())
             {
                 wc.Headers.Add(HttpRequestHeader.Authorization, $"Bearer {user.Token}");
                 wc.Headers.Add(RiotEntitlementHeader, user.Entitlement);
