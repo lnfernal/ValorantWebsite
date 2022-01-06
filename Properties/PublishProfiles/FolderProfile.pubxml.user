@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\Users\ProMa\Documents\GitHub\.Pro_Swapper\ValorantWebsite\bin\Release\net6.0\linux-publish\</_PublishTargetUrl>
+    <History>True|2022-01-05T04:21:50.1062733Z;True|2022-01-05T10:59:51.5800845+09:00;True|2022-01-05T10:57:57.1639936+09:00;True|2022-01-05T10:40:54.4558522+09:00;</History>
+  </PropertyGroup>
+</Project>

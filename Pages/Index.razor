@@ -162,15 +162,19 @@
     {
         bool PreLogin = false;
         string URLToken = string.Empty;
-
+        string CookieToken = string.Empty;
         if (QueryHelpers.ParseQuery(NavManager.ToAbsoluteUri(NavManager.Uri).Query).TryGetValue("token", out var OutToken))
         {
             PreLogin = true;
             URLToken = Convert.ToString(OutToken);
         }
+        else
+        {
+            CookieToken = await cookie.GetValue("data");
+            PreLogin = CookieToken.Length > 1;
+        }
 
-        var CookieToken = await cookie.GetValue("data");
-        PreLogin = CookieToken.Length > 1;
+
 
         if (PreLogin && firstRender && valService.user.loginState != LoginState.LoggedIn)
         {
@@ -183,6 +187,7 @@
             if (URLToken.Length > 1)
             {
                 valService.user.Token = URLToken;
+                loginType = LoginType.Token;
             }
             else if (CookieToken.Length > 1)
             {
