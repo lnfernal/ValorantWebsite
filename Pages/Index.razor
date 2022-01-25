@@ -111,22 +111,25 @@
 <h2>News</h2>
 <br />
 
-<div class="card-group">
-    @foreach (var item in valService.News.Result.Data.AllContentstackArticles.Nodes.Take(8).ToList())
-    {
-        <div class="col-sm-3">
-            <div class="card text-white m-1 text-center" style="background:#484848">
-                <div class="card-header text-center" style="font-size:medium;height:60px">@item.Title</div>
-                <div class="card-body text-center align-content-center">
-                    <a href="@GetNewsURL(item)" target="_blank">
-                        <img class="card-img-top mx-auto" src="@item.Banner.Url" style="width: 100%;height:100%; object-fit:fill">
-                    </a>
+@if (News_Instance != null)
+{
+    <div class="card-group">
+        @foreach (var item in News_Instance.Result.Data.AllContentstackArticles.Nodes.Take(8).ToList())
+        {
+            <div class="col-sm-3">
+                <div class="card text-white m-1 text-center" style="background:#484848">
+                    <div class="card-header text-center" style="font-size:medium;height:60px">@item.Title</div>
+                    <div class="card-body text-center align-content-center">
+                        <a href="@GetNewsURL(item)" target="_blank">
+                            <img class="card-img-top mx-auto" src="@item.Banner.Url" style="width: 100%;height:100%; object-fit:fill">
+                        </a>
+                    </div>
+                    <div class="card-footer text-muted">@GetTimeSince(item.Date)</div>
                 </div>
-                <div class="card-footer text-muted">@GetTimeSince(item.Date)</div>
             </div>
-        </div>
-    }
-</div>
+        }
+    </div>
+}
 <br />
 
 <hr />
@@ -150,6 +153,9 @@
 
     private const string SplitKey = "kdsjakDASD77a8dAHSDUASHDA787KAODASD*as7dasdhASD";
 
+
+    public static News.Root News_Instance { get; set; } = null;
+
     enum LoginType
     {
         None,
@@ -160,6 +166,7 @@
 
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
+        News_Instance = JsonSerializer.Deserialize<News.Root>(new WebClient().DownloadString("https://playvalorant.com/page-data/en-us/news/page-data.json"));
         bool PreLogin = false;
         string URLToken = string.Empty;
         string CookieToken = string.Empty;

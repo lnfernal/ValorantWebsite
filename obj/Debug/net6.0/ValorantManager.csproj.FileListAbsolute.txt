@@ -1,6 +1,5 @@
 C:\Users\ProMa\Documents\GitHub\.Pro_Swapper\ValorantWebsite\bin\Debug\net6.0\appsettings.Development.json
 C:\Users\ProMa\Documents\GitHub\.Pro_Swapper\ValorantWebsite\bin\Debug\net6.0\appsettings.json
-C:\Users\ProMa\Documents\GitHub\.Pro_Swapper\ValorantWebsite\bin\Debug\net6.0\JsonData\competitivetiers.json
 C:\Users\ProMa\Documents\GitHub\.Pro_Swapper\ValorantWebsite\bin\Debug\net6.0\ValorantManager.staticwebassets.runtime.json
 C:\Users\ProMa\Documents\GitHub\.Pro_Swapper\ValorantWebsite\bin\Debug\net6.0\ValorantManager.exe
 C:\Users\ProMa\Documents\GitHub\.Pro_Swapper\ValorantWebsite\bin\Debug\net6.0\ValorantManager.deps.json

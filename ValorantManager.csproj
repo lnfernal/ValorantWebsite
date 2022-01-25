@@ -4,7 +4,20 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Configurations>Debug;Release;Release-Folder</Configurations>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-Folder|AnyCPU'">
+    <Optimize>True</Optimize>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="JsonData\competitivetiers.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="JsonData\competitivetiers.json" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="RestSharp" Version="106.15.0" />

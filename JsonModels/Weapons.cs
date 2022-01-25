@@ -85,6 +85,7 @@
         {
             public string uuid { get; set; }
             public string displayName { get; set; }
+            public string GunName { get; set; } //Added manually
             public string levelItem { get; set; }
             public string displayIcon { get; set; }
             public string streamedVideo { get; set; }

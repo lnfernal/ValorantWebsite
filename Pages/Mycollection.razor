@@ -1,0 +1,78 @@
+﻿@page "/mycollection"
+@inject ValorantService ValService
+@inject NavigationManager NavManager
+<PageTitle>My Collection</PageTitle>
+@using ValorantManager.Data
+@inject IJSRuntime JsRuntime
+
+
+
+
+@if (ValorantService.user_s.loginState == LoginState.LoggedIn)
+{
+    <h1>My Collection</h1>
+
+
+    @if (OwnedSkins != null)
+    {
+        <div class="card-group">
+
+            @foreach (var skin in OwnedSkins.OrderBy(x => x.GunName))
+            {
+                <div class="col-sm-3">
+                    <div class="card text-white m-1 text-center" style="background:#484848">
+                        <div class="card-header text-center" style="font-size:small">@skin.displayName</div>
+                        <div class="card-body text-center align-content-center">
+                            <img class="card-img-top mx-auto" src="@skin.displayIcon" style="width:100%; height:100px; object-fit:contain">
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        }
+}
+@code {
+    
+    List<JsonModels.Weapons.Level> OwnedSkins = null;
+
+    private List<JsonModels.Weapons.Level> GetOwnedSkins()
+    {
+        List<JsonModels.Weapons.Level> tmp = new List<JsonModels.Weapons.Level>();
+
+        var OwnedItems = ValService.Get_Entitlements();
+
+        foreach (var entitlements in OwnedItems.EntitlementsByTypes)
+        {
+            if (entitlements.ItemTypeID == "e7c63390-eda7-46e0-bb7a-a6abdacd2433")//Skins
+            {
+                foreach (var skin in entitlements.Entitlements)
+                {
+                    foreach (var allweapons in ValService.Weapons.data)
+                    {
+                        foreach (var skins in allweapons.skins)
+                        {
+                            if (skin.ItemID == skins.levels[0].uuid)
+                            {
+                                skins.levels[0].GunName = allweapons.displayName;
+                                tmp.Add(skins.levels[0]);
+                            }
+                        }
+                    }
+
+                }
+
+            }
+        }
+
+        return tmp;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (ValorantService.user_s.loginState != LoginState.LoggedIn)
+            NavManager.NavigateTo("/");
+
+        OwnedSkins = GetOwnedSkins();
+        StateHasChanged();
+    }
+}
