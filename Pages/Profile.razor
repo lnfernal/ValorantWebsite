@@ -7,25 +7,26 @@
 @using Microsoft.AspNetCore.Components;
 @using static QRCoder.PayloadGenerator
 @inject NavigationManager NavManager
+@inject ValorantService ValorantService
 
-<PageTitle>Profile | @ValorantService.user_s.Name</PageTitle>
+<PageTitle>Profile | @ValorantService.user.Name</PageTitle>
 
-@if (ValorantService.user_s.loginState == LoginState.LoggedIn)
+@if (ValorantService.user.loginState == LoginState.LoggedIn)
 {
-    <h1>@ValorantService.user_s.Name's Profile</h1>
+    <h1>@ValorantService.user.Name's Profile</h1>
     <p class="text-start text-wrap" style="width:80vw">
         User Information:<br />
-        Account ID: @ValorantService.user_s.puuid <br />
-        Account Created On: @ValorantService.GetAccountCreationDate(ValorantService.user_s.CreationDate) (UTC) <br>
-        Valorant Points: @ValorantService.user_s.wallet.Balances.ValorantPoints <br />
-        Radianite: @ValorantService.user_s.wallet.Balances.Radianite <br />
-        Region: @ValorantService.user_s.region <br />
+        Account ID: @ValorantService.user.puuid <br />
+        Account Created On: @ValorantService.GetAccountCreationDate(ValorantService.user.CreationDate) (UTC) <br>
+        Valorant Points: @ValorantService.user.wallet.Balances.ValorantPoints <br />
+        Radianite: @ValorantService.user.wallet.Balances.Radianite <br />
+        Region: @ValorantService.user.region <br />
         <br>
         <ul class="list-group text-break" style="background:#484848;width:80vw">
             <p class="text-left" style="padding-left:5px">Current Token:</p>
-            <li class="list-group-item kye_secret" style="background:#484848">@ValorantService.user_s.Token</li>
+            <li class="list-group-item kye_secret" style="background:#484848">@ValorantService.user.Token</li>
             <p class="text-left" style="padding-left:5px">Current Entitlement:</p>
-            <li class="list-group-item kye_secret" style="background:#484848">@ValorantService.user_s.Entitlement</li>
+            <li class="list-group-item kye_secret" style="background:#484848">@ValorantService.user.Entitlement</li>
         </ul>
 
     </p>
@@ -49,16 +50,16 @@
 
     protected override void OnInitialized()
     {
-        if (ValorantService.user_s.loginState == LoginState.LoggedIn)
+        if (ValorantService.user.loginState == LoginState.LoggedIn)
         {
-            if (ValorantService.user_s.wallet == null)
-                ValorantService.user_s.wallet = ValorantService.Store_GetWallet();
+            if (ValorantService.user.wallet == null)
+                ValorantService.user.wallet = ValorantService.Store_GetWallet();
         }
     }
 
     protected override void OnAfterRender(bool firstRender)
     {
-        if (ValorantService.user_s.loginState != LoginState.LoggedIn)
+        if (ValorantService.user.loginState != LoginState.LoggedIn)
             NavManager.NavigateTo("/");
     }
 
@@ -70,7 +71,7 @@
         {
             return;
         }
-        Url generator = new Url(NavManager.BaseUri + "?token=" + ValorantService.user_s.Token);
+        Url generator = new Url(NavManager.BaseUri + "?token=" + ValorantService.user.Token);
         string payload = generator.ToString();
 
         QRCodeGenerator qrGenerator = new QRCodeGenerator();

@@ -12,6 +12,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="2FA\**" />
+    <Content Remove="2FA\**" />
+    <EmbeddedResource Remove="2FA\**" />
+    <None Remove="2FA\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="JsonData\competitivetiers.json" />
   </ItemGroup>
 

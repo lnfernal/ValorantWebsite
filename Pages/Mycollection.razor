@@ -8,35 +8,52 @@
 
 
 
-@if (ValorantService.user_s.loginState == LoginState.LoggedIn)
+@if (ValService.user.loginState == LoginState.LoggedIn)
 {
     <h1>My Collection</h1>
 
 
     @if (OwnedSkins != null)
     {
-        <div class="card-group">
-
-            @foreach (var skin in OwnedSkins.OrderBy(x => x.GunName))
+        @foreach (var skin in OwnedSkins)
+        {
+            @if (AddTitle(skin.GunName))
             {
-                <div class="col-sm-3">
-                    <div class="card text-white m-1 text-center" style="background:#484848">
-                        <div class="card-header text-center" style="font-size:small">@skin.displayName</div>
-                        <div class="card-body text-center align-content-center">
-                            <img class="card-img-top mx-auto" src="@skin.displayIcon" style="width:100%; height:100px; object-fit:contain">
-                        </div>
+                <br />
+                <h3>@skin.GunName</h3>
+            }
+            <div class="card flex-row flex-wrap flex-column" style="background:#484848">
+                <div class="card text-white m-1 text-center" style="background:#484848">
+                    <div class="card-header text-center" style="font-size:small">@skin.displayName</div>
+                    <div class="card-body text-center align-content-center">
+                        <img class="card-img-top mx-auto" src="@skin.displayIcon" style="width:100%; height:100px; object-fit:contain">
                     </div>
                 </div>
-            }
-        </div>
+            </div>
+            <br />
         }
+    }
 }
 @code {
-    
+    string AlreadyAddedTitles = "";
+
+
+    private bool AddTitle(string GunName)
+    {
+        if (!AlreadyAddedTitles.Contains(GunName))
+        {
+            AlreadyAddedTitles += GunName;
+            return true;
+        }
+
+        return false;
+    }
+
     List<JsonModels.Weapons.Level> OwnedSkins = null;
 
     private List<JsonModels.Weapons.Level> GetOwnedSkins()
     {
+        AlreadyAddedTitles = "";
         List<JsonModels.Weapons.Level> tmp = new List<JsonModels.Weapons.Level>();
 
         var OwnedItems = ValService.Get_Entitlements();
@@ -64,12 +81,27 @@
             }
         }
 
-        return tmp;
+        List<JsonModels.Weapons.Level> FinalList = new List<JsonModels.Weapons.Level>();
+
+        List<JsonModels.Weapons.Level> tmp2 = new List<JsonModels.Weapons.Level>();
+        tmp2.AddRange(tmp);
+        foreach (var item in tmp2.OrderBy(x => x.GunName))
+        {
+            if (item.GunName == "Melee" || item.GunName == "Vandal" || item.GunName == "Phantom" || item.GunName == "Classic")
+            {
+                FinalList.Add(item);
+                tmp.Remove(item);
+            }
+        }
+
+        FinalList.AddRange(tmp);
+
+        return FinalList;
     }
 
     protected override void OnAfterRender(bool firstRender)
     {
-        if (ValorantService.user_s.loginState != LoginState.LoggedIn)
+        if (ValService.user.loginState != LoginState.LoggedIn)
             NavManager.NavigateTo("/");
 
         OwnedSkins = GetOwnedSkins();

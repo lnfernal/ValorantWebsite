@@ -17,7 +17,6 @@ namespace ValorantManager.Services
         public event Action OnChange;
         private void LoginStateChanged() => OnChange.Invoke();
         public User user { get; set; } = new User() { loginState = LoginState.LoggedOut };
-        public static User user_s { get; set; } = new User() { loginState = LoginState.LoggedOut };
 
         public void Login()
         {
@@ -65,13 +64,12 @@ namespace ValorantManager.Services
             else
                 user.loginState = LoginState.WrongLogin;
 
-            user_s = user;
             LoginStateChanged();
         }
 
         public void Logout()
         {
-            user = user_s = new();
+            user = new();
             LoginStateChanged();
         }
 
@@ -95,8 +93,8 @@ namespace ValorantManager.Services
             }
         }
 
-        public static void AddBearer(ref WebClient wc) => wc.Headers.Add(HttpRequestHeader.Authorization, $"Bearer {user_s.Token}");
-        public static void AddEntitlements(ref WebClient wc) => wc.Headers.Add(RiotEntitlementHeader, user_s.Entitlement);
+        public void AddBearer(ref WebClient wc) => wc.Headers.Add(HttpRequestHeader.Authorization, $"Bearer {user.Token}");
+        public void AddEntitlements(ref WebClient wc) => wc.Headers.Add(RiotEntitlementHeader, user.Entitlement);
 
         public Loadout.Root GetLoadout()
         {
@@ -104,7 +102,7 @@ namespace ValorantManager.Services
             WebClient wc = new();
             AddBearer(ref wc);
             AddEntitlements(ref wc);
-            return JsonSerializer.Deserialize<Loadout.Root>(wc.DownloadString($"https://pd.{user_s.region}.a.pvp.net/personalization/v2/players/{user_s.puuid}/playerloadout"));            
+            return JsonSerializer.Deserialize<Loadout.Root>(wc.DownloadString($"https://pd.{user.region}.a.pvp.net/personalization/v2/players/{user.puuid}/playerloadout"));
         }
 
         public bool SetPlayerLoadout(Loadout.Root loadout)
@@ -112,17 +110,17 @@ namespace ValorantManager.Services
             try
             {
                 WebClient wc = new();
-                    AddBearer(ref wc);
-                    AddEntitlements(ref wc);
-                    string url = $"https://pd.{user_s.region}.a.pvp.net/personalization/v2/players/{user_s.puuid}/playerloadout";
-                    string response = wc.UploadString(url, "PUT", JsonSerializer.Serialize(loadout));
-                    return true;
+                AddBearer(ref wc);
+                AddEntitlements(ref wc);
+                string url = $"https://pd.{user.region}.a.pvp.net/personalization/v2/players/{user.puuid}/playerloadout";
+                string response = wc.UploadString(url, "PUT", JsonSerializer.Serialize(loadout));
+                return true;
             }
             catch
             {
                 return false;
             }
-        }   
+        }
 
         public static CompetitiveTiers.Root Tiers_Instance { get; set; } = null;
         public CompetitiveTiers.Root CompTiers
@@ -157,17 +155,17 @@ namespace ValorantManager.Services
         public Entitlements.Rootobject Get_Entitlements()
         {
             WebClient wc = new();
-                AddBearer(ref wc);
-                AddEntitlements(ref wc);
-                return JsonSerializer.Deserialize<Entitlements.Rootobject>(wc.DownloadString($"https://pd.{user_s.region}.a.pvp.net/store/v1/entitlements/{user_s.puuid}"));
+            AddBearer(ref wc);
+            AddEntitlements(ref wc);
+            return JsonSerializer.Deserialize<Entitlements.Rootobject>(wc.DownloadString($"https://pd.{user.region}.a.pvp.net/store/v1/entitlements/{user.puuid}"));
         }
 
         public StoreFrontV2.Root Store_GetStorefrontV2()
         {
             WebClient wc = new();
-                AddBearer(ref wc);
-                AddEntitlements(ref wc);
-                return JsonSerializer.Deserialize<StoreFrontV2.Root>(wc.DownloadString($"https://pd.{user_s.region}.a.pvp.net/store/v2/storefront/{user_s.puuid}"));
+            AddBearer(ref wc);
+            AddEntitlements(ref wc);
+            return JsonSerializer.Deserialize<StoreFrontV2.Root>(wc.DownloadString($"https://pd.{user.region}.a.pvp.net/store/v2/storefront/{user.puuid}"));
         }
 
         public static Buddies.Root Buddies_Instance { get; set; } = null;
@@ -271,13 +269,13 @@ namespace ValorantManager.Services
         }
 
 
-        public static Wallet.Rootobject Store_GetWallet()
+        public Wallet.Rootobject Store_GetWallet()
         {
             WebClient wc = new();
-                AddBearer(ref wc);
-                AddEntitlements(ref wc);
-                string url = $"https://pd.{user_s.region}.a.pvp.net/store/v1/wallet/{user_s.puuid}";
-                return JsonSerializer.Deserialize<Wallet.Rootobject>(wc.DownloadString(url));
+            AddBearer(ref wc);
+            AddEntitlements(ref wc);
+            string url = $"https://pd.{user.region}.a.pvp.net/store/v1/wallet/{user.puuid}";
+            return JsonSerializer.Deserialize<Wallet.Rootobject>(wc.DownloadString(url));
         }
 
         public static string GetAccountCreationDate(long CreationDate)
@@ -357,15 +355,15 @@ namespace ValorantManager.Services
             WebClient wc = new();
             AddBearer(ref wc);
             AddEntitlements(ref wc);
-            string url = $"https://glz-{user_s.region}-1.{user_s.region}.a.pvp.net/core-game/v1/players/{user_s.puuid}";
+            string url = $"https://glz-{user.region}-1.{user.region}.a.pvp.net/core-game/v1/players/{user.puuid}";
             try
-                {
-                    return JsonSerializer.Deserialize<CoreGame_FetchPlayer.Root>(wc.DownloadString(url));
-                }
-                catch
-                {
-                    return null;
-                }
+            {
+                return JsonSerializer.Deserialize<CoreGame_FetchPlayer.Root>(wc.DownloadString(url));
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public CoreGame_FetchMatch.Root CoreGame_FetchMatch(string MatchID)
@@ -373,54 +371,54 @@ namespace ValorantManager.Services
             WebClient wc = new();
             AddBearer(ref wc);
             AddEntitlements(ref wc);
-            string url = $"https://glz-{user_s.region}-1.{user_s.region}.a.pvp.net/core-game/v1/matches/{MatchID}";
-                try
-                {
-                    return JsonSerializer.Deserialize<CoreGame_FetchMatch.Root>(wc.DownloadString(url));
-                }
-                catch
-                {
-                    return null;
-                }
+            string url = $"https://glz-{user.region}-1.{user.region}.a.pvp.net/core-game/v1/matches/{MatchID}";
+            try
+            {
+                return JsonSerializer.Deserialize<CoreGame_FetchMatch.Root>(wc.DownloadString(url));
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public CoreGame_FetchMatch.Root CoreGame_FetchMatchLoadouts(string MatchID)
         {
             WebClient wc = new();
-                AddBearer(ref wc);
-                AddEntitlements(ref wc);
-                string url = $"https://glz-{user_s.region}-1.{user_s.region}.a.pvp.net/core-game/v1/matches/{MatchID}/loadouts";
-                try
-                {
-                    return JsonSerializer.Deserialize<CoreGame_FetchMatch.Root>(wc.DownloadString(url));
-                }
-                catch
-                {
-                    return null;
-                }
+            AddBearer(ref wc);
+            AddEntitlements(ref wc);
+            string url = $"https://glz-{user.region}-1.{user.region}.a.pvp.net/core-game/v1/matches/{MatchID}/loadouts";
+            try
+            {
+                return JsonSerializer.Deserialize<CoreGame_FetchMatch.Root>(wc.DownloadString(url));
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public CoreGame_FetchPlayer.Root Pregame_GetPlayer()
         {
             WebClient wc = new WebClient();
-                AddBearer(ref wc);
-                AddEntitlements(ref wc);
-                string url = $"https://glz-{user_s.region}-1.{user_s.region}.a.pvp.net/pregame/v1/players/{user_s.puuid}";
-                try
-                {
-                    return JsonSerializer.Deserialize<CoreGame_FetchPlayer.Root>(wc.DownloadString(url));
-                }
-                catch
-                {
-                    return null;
-                }
+            AddBearer(ref wc);
+            AddEntitlements(ref wc);
+            string url = $"https://glz-{user.region}-1.{user.region}.a.pvp.net/pregame/v1/players/{user.puuid}";
+            try
+            {
+                return JsonSerializer.Deserialize<CoreGame_FetchPlayer.Root>(wc.DownloadString(url));
+            }
+            catch
+            {
+                return null;
+            }
         }
         public Dictionary<string, string> IDToUsername(string[] puuidArray)
         {
             using (WebClient wc = new())
             {
                 //No auth required for name service
-                string url = $"https://pd.{user_s.region}.a.pvp.net/name-service/v2/players";
+                string url = $"https://pd.{user.region}.a.pvp.net/name-service/v2/players";
 
                 string req = wc.UploadString(url, "PUT", JsonSerializer.Serialize(puuidArray));
 
@@ -439,12 +437,12 @@ namespace ValorantManager.Services
 
         public FetchCompetitiveUpdates.Root MMR_FetchCompetitiveUpdates(string puuid)
         {
-                WebClient wc = new();
-                AddBearer(ref wc);
-                AddEntitlements(ref wc);
-                wc.Headers.Add(RiotPlatformHeader, RiotPlatformHeaderValue);
-                string url = $"https://pd.{user_s.region}.a.pvp.net/mmr/v1/players/{puuid}/competitiveupdates?queue=competitive&endIndex=3&startIndex=0";
-                return JsonSerializer.Deserialize<FetchCompetitiveUpdates.Root>(wc.DownloadString(url));
+            WebClient wc = new();
+            AddBearer(ref wc);
+            AddEntitlements(ref wc);
+            wc.Headers.Add(RiotPlatformHeader, RiotPlatformHeaderValue);
+            string url = $"https://pd.{user.region}.a.pvp.net/mmr/v1/players/{puuid}/competitiveupdates?queue=competitive&endIndex=3&startIndex=0";
+            return JsonSerializer.Deserialize<FetchCompetitiveUpdates.Root>(wc.DownloadString(url));
         }
 
         public static string RiotClientVersion_Instance { get; set; }
@@ -460,7 +458,7 @@ namespace ValorantManager.Services
             set { RiotClientVersion_Instance = value; }
         }
 
-        public string GetClientVersion()=> JsonSerializer.Deserialize<JsonElement>(new WebClient().DownloadString("https://valorant-api.com/v1/version")).GetProperty("data").GetProperty("riotClientVersion").GetString();
+        public string GetClientVersion() => JsonSerializer.Deserialize<JsonElement>(new WebClient().DownloadString("https://valorant-api.com/v1/version")).GetProperty("data").GetProperty("riotClientVersion").GetString();
 
 
         public class PlayerGameInfo
@@ -483,10 +481,10 @@ namespace ValorantManager.Services
         {
             List<PlayerGameInfo> info = new();
 
-            Dictionary<string,string> names = IDToUsername(puuidArray);
+            Dictionary<string, string> names = IDToUsername(puuidArray);
             foreach (var name in names)
             {
-                PlayerGameInfo player = new() { Name = name.Value, ID = name.Key};
+                PlayerGameInfo player = new() { Name = name.Value, ID = name.Key };
 
                 try
                 {
@@ -516,7 +514,7 @@ namespace ValorantManager.Services
                 {
 
                 }
-                
+
                 info.Add(player);
             }
             return info;
@@ -527,50 +525,50 @@ namespace ValorantManager.Services
             WebClient wc = new();
             AddBearer(ref wc);
             AddEntitlements(ref wc);
-                wc.Headers.Add(RiotPlatformHeader, RiotPlatformHeaderValue);
-                wc.Headers.Add("X-Riot-ClientVersion", RiotClientVersion);
+            wc.Headers.Add(RiotPlatformHeader, RiotPlatformHeaderValue);
+            wc.Headers.Add("X-Riot-ClientVersion", RiotClientVersion);
 
 
-                JsonElement response = JsonSerializer.Deserialize<JsonElement>(wc.DownloadString($"https://pd.{user_s.region}.a.pvp.net/mmr/v1/players/{puuid}"));
+            JsonElement response = JsonSerializer.Deserialize<JsonElement>(wc.DownloadString($"https://pd.{user.region}.a.pvp.net/mmr/v1/players/{puuid}"));
 
-                JsonElement.ObjectEnumerator seasonslist;
-                try
+            JsonElement.ObjectEnumerator seasonslist;
+            try
+            {
+                seasonslist = response.GetProperty("QueueSkills").GetProperty("competitive").GetProperty("SeasonalInfoBySeasonID").EnumerateObject();
+            }
+            catch (Exception ex)
+            {
+                return 0;//Hasnt played comp
+            }
+
+
+            int heighestRank = 0;
+
+            try
+            {
+                foreach (var item in seasonslist)
                 {
-                    seasonslist = response.GetProperty("QueueSkills").GetProperty("competitive").GetProperty("SeasonalInfoBySeasonID").EnumerateObject();
-                }
-                catch (Exception ex)
-                {
-                    return 0;//Hasnt played comp
-                }
-
-
-                int heighestRank = 0;
-
-                try
-                {
-                    foreach (var item in seasonslist)
+                    foreach (var Wins in item.Value.GetProperty("WinsByTier").EnumerateObject())
                     {
-                        foreach (var Wins in item.Value.GetProperty("WinsByTier").EnumerateObject())
-                        {
-                            int curRank = int.Parse(Wins.Name);
-                            if (curRank > heighestRank)
-                                heighestRank = curRank;
-                        }
-
-
-                    }
-                }
-                catch (Exception ex)//Hasn't won a game
-                {
-                    foreach (var item in seasonslist)
-                    {
-                        int curRank = item.Value.GetProperty("CompetitiveTier").GetInt32();
+                        int curRank = int.Parse(Wins.Name);
                         if (curRank > heighestRank)
                             heighestRank = curRank;
                     }
-                }
 
-                return heighestRank;
+
+                }
+            }
+            catch (Exception ex)//Hasn't won a game
+            {
+                foreach (var item in seasonslist)
+                {
+                    int curRank = item.Value.GetProperty("CompetitiveTier").GetInt32();
+                    if (curRank > heighestRank)
+                        heighestRank = curRank;
+                }
+            }
+
+            return heighestRank;
         }
         int CalculateElo(int tier, int RR)
         {

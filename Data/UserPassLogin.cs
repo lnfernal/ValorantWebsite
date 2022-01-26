@@ -10,15 +10,18 @@ namespace ValorantManager.Data
     //https://github.com/RumbleMike/ValorantAuth/blob/master/Program.cs
     public static class UserPassLogin
     {
-        public static string Login(string username, string password)
+        public static JsonElement MultifactorCode(string code, CookieContainer cookie)
         {
-            CookieContainer cookie = new CookieContainer();
-            GetAuthorization(cookie);
-            var authJson = JsonSerializer.Deserialize<JsonElement>(Authenticate(cookie, username, password));
-            string authURL = authJson.GetProperty("response").GetProperty("parameters").GetProperty("uri").GetString();
-            return Regex.Match(authURL, @"access_token=(.+?)&scope=").Groups[1].Value;
+            var client = new RestClient("https://auth.riotgames.com/api/v1/authorization");
+            client.Timeout = -1;
+            var request = new RestRequest(Method.PUT);
+            client.CookieContainer = cookie;
+            request.AddHeader("Content-Type", "application/json");
+            var body = "{\"type\":\"multifactor\",\"code\":\"" + code + "\",\"rememberDevice\":false}";
+            request.AddParameter("application/json", body, ParameterType.RequestBody);
+            IRestResponse response = client.Execute(request);
+            return JsonSerializer.Deserialize<JsonElement>(response.Content);
         }
-
 
 
         public static void GetAuthorization(CookieContainer jar)
@@ -29,6 +32,8 @@ namespace ValorantManager.Data
             client.CookieContainer = jar;
 
             RestRequest request = new RestRequest(Method.POST);
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36");
             string body = "{\"client_id\":\"play-valorant-web-prod\",\"nonce\":\"1\",\"redirect_uri\":\"https://playvalorant.com/opt_in" + "\",\"response_type\":\"token id_token\",\"scope\":\"account openid\"}";
             request.AddJsonBody(body);
             client.Execute(request);

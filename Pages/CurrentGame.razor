@@ -65,7 +65,7 @@ else if (fetchmatch != null)
 
     string SetTableColor(string TeamID)
     {
-        if (TeamID == fetchmatch.Players.First(x => x.Subject.Equals(ValorantService.user_s.puuid)).TeamID)
+        if (TeamID == fetchmatch.Players.First(x => x.Subject.Equals(ValService.user.puuid)).TeamID)
         {
             TableColor = "#416e7f";//Is on our team
         }
