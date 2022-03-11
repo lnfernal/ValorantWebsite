@@ -5,11 +5,11 @@
 @using Microsoft.AspNetCore.Components
 @using ValorantManager.Data
 
- @if (currentshop != null)
+ @if (DailyItemShop != null && currentShop != null)
 {
-    <h1>Skin Offers</h1>
+    <h2>Skin Offers</h2>
 
-    <p class="fs-3">@ShopTimeLeft(StoreFront.SkinsPanelLayout.SingleItemOffersRemainingDurationInSeconds) left</p>
+    <p class="fs-3">@ShopTimeLeft(currentShop.SkinsPanelLayout.SingleItemOffersRemainingDurationInSeconds) left</p>
     <div class="card" style="width: 150px;background:transparent; position:relative; top:0px; right:0px; border:0;float:right;margin-top:-50px">
         <ul class="list-group list-unstyled">
             <li class="list-group-item" style="background:transparent; color:white;border:0">
@@ -28,7 +28,7 @@
 
     <div class="card-group">
 
-        @foreach (var weapons in currentshop)
+        @foreach (var weapons in DailyItemShop)
         {
             <div class="col-sm-3">
                 <div class="card text-white m-1" style="height:auto; background:#484848">
@@ -40,6 +40,28 @@
             </div>
         }
     </div>
+
+    <br />
+    @if (NightMarket != null && NightMarket.Count > 0)
+    {
+        <h2>Night Market</h2>
+        <p class="fs-3">@ShopTimeLeft(currentShop.BonusStore.BonusStoreRemainingDurationInSeconds) left</p>
+        <div class="card-group">
+
+            @foreach (var weapons in NightMarket)
+            {
+                <div class="col-sm-3">
+                    <div class="card text-white m-1" style="height:auto; background:#484848">
+                        <div class="card-header text-center" style="font-size:small">@weapons.displayName</div>
+                        <div class="card-body text-center align-content-center">
+                            <img class="card-body card-img-top mx-auto text-center align-content-center" src="@weapons.displayIcon" style="width:100%; height:100px; object-fit:contain">
+                        </div>
+                        <div class="card-footer">@weapons.NightMarketPrice VP (@weapons.NightMarketPercentOff% off)</div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
 }
 
 @code
@@ -47,11 +69,12 @@
 
     private JsonModels.StoreFrontV2.Root StoreFront { get; set; } = null;
 
-    private List<JsonModels.Weapons.Level> currentshop { get; set; } = null;
+    private List<JsonModels.Weapons.Level> DailyItemShop { get; set; } = null;
+    private List<JsonModels.Weapons.Level> NightMarket { get; set; } = null;
+    private JsonModels.StoreFrontV2.Root currentShop { get; set; } = null;
 
-    List<JsonModels.Weapons.Level> GetShop()
+    List<JsonModels.Weapons.Level> GetShop(JsonModels.StoreFrontV2.Root StoreFront)
     {
-        StoreFront = ValService.Store_GetStorefrontV2();
         List<JsonModels.Weapons.Level> shopItems = new List<JsonModels.Weapons.Level>();
         if (StoreFront != null)
         {
@@ -71,11 +94,49 @@
         return shopItems;
     }
 
+    List<JsonModels.Weapons.Level> GetNightmarket(JsonModels.StoreFrontV2.Root StoreFront)
+    {
+        try
+        {
+            List<JsonModels.Weapons.Level> shopItems = new List<JsonModels.Weapons.Level>();
+            if (StoreFront != null && StoreFront.BonusStore != null)
+            {
+                foreach (var offers in StoreFront.BonusStore.BonusStoreOffers)
+                {
+                    for (var i = 0; i < ValService.Weapons.data.Count; i++)
+                    {
+                        foreach (var skin in ValService.Weapons.data[i].skins)
+                        {
+                            if (offers.Offer.OfferID == skin.levels[0].uuid)
+                            {
+                                skin.levels[0].NightMarketPrice = offers.DiscountCosts._85ad13f73d1b51289eb27cd8ee0b5741;
+                                skin.levels[0].NightMarketPercentOff = offers.DiscountPercent;
+                                shopItems.Add(skin.levels[0]);
+                            }
+
+                        }
+                    }
+                }
+                return shopItems;
+            }
+            else
+            {
+                return new List<JsonModels.Weapons.Level>();
+            }
+
+        }
+        catch
+        {
+            return new List<JsonModels.Weapons.Level>();
+        }
+
+    }
+
     public string ShopTimeLeft(int secondsLeft)
     {
         TimeSpan t = TimeSpan.FromSeconds(secondsLeft);
 
-        return t.ToString("h'h 'm'm 's's'");
+        return $"{t.Days} days, {t.Hours} hours, {t.Minutes} minutes";
     }
 
 
@@ -83,10 +144,14 @@
     {
         if (ValService.user.loginState == LoginState.LoggedIn)
         {
-            if (currentshop == null)
-            {
-                currentshop = GetShop();
-            }
+            if (currentShop == null)
+                currentShop = ValService.Store_GetStorefrontV2();
+
+            if (DailyItemShop == null)
+                DailyItemShop = GetShop(currentShop);
+
+            if (NightMarket == null)
+                NightMarket = GetNightmarket(currentShop);
 
             if (ValService.user.wallet == null)
                 ValService.user.wallet = ValService.Store_GetWallet();

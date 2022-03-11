@@ -13,7 +13,6 @@
 @inject ValorantService valService
 @inject NavigationManager NavManager
 @inject ICookie cookie
-@inject JsConsole JsConsole
 @page "/"
 
 <PageTitle>Pro Swapper Valorant</PageTitle>
@@ -298,7 +297,6 @@
         }
 
         string LoginType = authJson.GetProperty("type").ToString();
-        Task.Run(() => this.JsConsole.LogAsync("Login type: " + LoginType));
         switch (LoginType)
         {
             case "response"://Normal username & password login
@@ -339,17 +337,14 @@
             if (loginType == LoginType.UserPass)
                 valService.user.Token = Login(valService.user.auth_username, valService.user.auth_password);
 
-            await this.JsConsole.LogAsync("Logged in with token = " + valService.user.Token);
             if (valService.user.Token == null)
             {
-                await this.JsConsole.LogAsync("Token returned null");
                 valService.user.loginState = LoginState.LoggedOut;
                 await InvokeAsync(StateHasChanged);
                 return;
             }
             if (valService.user.Token == "rate_limited")
             {
-                await this.JsConsole.LogAsync("Rate limited");
                 valService.user.loginState = LoginState.LoggedOut;
                 await InvokeAsync(StateHasChanged);
                 return;

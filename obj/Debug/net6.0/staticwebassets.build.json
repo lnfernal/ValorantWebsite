@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "JLSzfTRNSgQvCU12r4WCni+WvSbrNflYOdiREPOdGG0=",
+  "Hash": "Jmk/1krIuotUCkPF2e8fGwogxybXep+WNUatyx7rmSQ=",
   "Source": "ValorantManager",
   "BasePath": "_content/ValorantManager",
   "Mode": "Default",
@@ -100,23 +100,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\bootstrap\\bootstrap.min.css.map"
-    },
-    {
-      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
-      "SourceId": "ValorantManager",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\",
-      "BasePath": "_content/ValorantManager",
-      "RelativePath": "css/open-iconic/FONT-LICENSE",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\open-iconic\\FONT-LICENSE"
     },
     {
       "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\css\\open-iconic\\font\\css\\open-iconic-bootstrap.min.css",
@@ -219,6 +202,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\open-iconic\\font\\fonts\\open-iconic.woff"
+    },
+    {
+      "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\css\\open-iconic\\FONT-LICENSE",
+      "SourceId": "ValorantManager",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\",
+      "BasePath": "_content/ValorantManager",
+      "RelativePath": "css/open-iconic/FONT-LICENSE",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\open-iconic\\FONT-LICENSE"
     },
     {
       "Identity": "C:\\Users\\ProMa\\Documents\\GitHub\\ValorantManager\\wwwroot\\css\\open-iconic\\ICON-LICENSE",

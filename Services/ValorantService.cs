@@ -165,7 +165,8 @@ namespace ValorantManager.Services
             WebClient wc = new();
             AddBearer(ref wc);
             AddEntitlements(ref wc);
-            return JsonSerializer.Deserialize<StoreFrontV2.Root>(wc.DownloadString($"https://pd.{user.region}.a.pvp.net/store/v2/storefront/{user.puuid}"));
+            string shopresponse = wc.DownloadString($"https://pd.{user.region}.a.pvp.net/store/v2/storefront/{user.puuid}");
+            return JsonSerializer.Deserialize<StoreFrontV2.Root>(shopresponse);
         }
 
         public static Buddies.Root Buddies_Instance { get; set; } = null;

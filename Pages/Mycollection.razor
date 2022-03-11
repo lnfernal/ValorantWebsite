@@ -81,22 +81,24 @@
             }
         }
 
-        List<JsonModels.Weapons.Level> FinalList = new List<JsonModels.Weapons.Level>();
+        return tmp.OrderBy(x => x.GunName).ToList();
 
-        List<JsonModels.Weapons.Level> tmp2 = new List<JsonModels.Weapons.Level>();
-        tmp2.AddRange(tmp);
-        foreach (var item in tmp2.OrderBy(x => x.GunName))
-        {
-            if (item.GunName == "Melee" || item.GunName == "Vandal" || item.GunName == "Phantom" || item.GunName == "Classic")
-            {
-                FinalList.Add(item);
-                tmp.Remove(item);
-            }
-        }
+        //List<JsonModels.Weapons.Level> FinalList = new List<JsonModels.Weapons.Level>();
 
-        FinalList.AddRange(tmp);
+        //List<JsonModels.Weapons.Level> tmp2 = new List<JsonModels.Weapons.Level>();
+        //tmp2.AddRange(tmp);
+        //foreach (var item in tmp2.OrderBy(x => x.GunName))
+        //{
+        //    if (item.GunName == "Melee" || item.GunName == "Vandal" || item.GunName == "Phantom" || item.GunName == "Classic")
+        //    {
+        //        FinalList.Add(item);
+        //        tmp.Remove(item);
+        //    }
+        //}
 
-        return FinalList;
+        //FinalList.AddRange(tmp);
+
+        //return FinalList;
     }
 
     protected override void OnAfterRender(bool firstRender)

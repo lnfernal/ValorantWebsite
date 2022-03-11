@@ -15,7 +15,6 @@ C:\Users\ProMa\Documents\GitHub\ValorantManager\bin\Debug\net6.0\ValorantManager
 C:\Users\ProMa\Documents\GitHub\ValorantManager\bin\Debug\net6.0\ValorantManager.deps.json
 C:\Users\ProMa\Documents\GitHub\ValorantManager\bin\Debug\net6.0\ValorantManager.runtimeconfig.json
 C:\Users\ProMa\Documents\GitHub\ValorantManager\bin\Debug\net6.0\ValorantManager.dll
-C:\Users\ProMa\Documents\GitHub\ValorantManager\bin\Debug\net6.0\ref\ValorantManager.dll
 C:\Users\ProMa\Documents\GitHub\ValorantManager\bin\Debug\net6.0\ValorantManager.pdb
 C:\Users\ProMa\Documents\GitHub\ValorantManager\bin\Debug\net6.0\Microsoft.Win32.SystemEvents.dll
 C:\Users\ProMa\Documents\GitHub\ValorantManager\bin\Debug\net6.0\QRCoder.dll
@@ -33,3 +32,4 @@ C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Debug\net6.0\scopedcss\proje
 C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Debug\net6.0\ValorantManager.csproj.CopyComplete
 C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Debug\net6.0\ref\ValorantManager.dll
 C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Debug\net6.0\ValorantManager.genruntimeconfig.cache
+C:\Users\ProMa\Documents\GitHub\ValorantManager\obj\Debug\net6.0\refint\ValorantManager.dll
