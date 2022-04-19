@@ -29,11 +29,20 @@ namespace ValorantManager.Services
             var cValue = await GetCookie();
             if (string.IsNullOrEmpty(cValue)) return def;
 
-            var vals = cValue.Split(';');
+            string[] vals = cValue.Split(';');
             foreach (var val in vals)
+            {
                 if (!string.IsNullOrEmpty(val) && val.IndexOf('=') > 0)
-                    if (val.Substring(1, val.IndexOf('=') - 1).Trim().Equals(key, StringComparison.OrdinalIgnoreCase))
-                        return val.Substring(val.IndexOf('=') + 1);
+                {
+                    if (val.Split('=')[0] == key)
+                    {
+                        int keyLength = key.Length + 1;
+                        return val.Substring(keyLength, val.Length - keyLength);
+                    }
+                        
+                }
+            }
+
             return def;
         }
 

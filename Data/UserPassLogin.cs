@@ -10,6 +10,7 @@ namespace ValorantManager.Data
     //https://github.com/RumbleMike/ValorantAuth/blob/master/Program.cs
     public static class UserPassLogin
     {
+        public static CookieContainer _cookieContainer = null;
         public static JsonElement MultifactorCode(string code, CookieContainer cookie)
         {
             var client = new RestClient("https://auth.riotgames.com/api/v1/authorization");
@@ -24,28 +25,27 @@ namespace ValorantManager.Data
         }
 
 
-        public static void GetAuthorization(CookieContainer jar)
+        public static void GetAuthorization()
         {
-            string url = "https://auth.riotgames.com/api/v1/authorization";
-            RestClient client = new RestClient(url);
+                _cookieContainer = new CookieContainer();
+                string url = "https://auth.riotgames.com/api/v1/authorization";
+                RestClient client = new RestClient(url);
 
-            client.CookieContainer = jar;
+                client.CookieContainer = _cookieContainer;
 
-            RestRequest request = new RestRequest(Method.POST);
-            request.AddHeader("Content-Type", "application/json");
-            request.AddHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36");
-            string body = "{\"client_id\":\"play-valorant-web-prod\",\"nonce\":\"1\",\"redirect_uri\":\"https://playvalorant.com/opt_in" + "\",\"response_type\":\"token id_token\",\"scope\":\"account openid\"}";
-            request.AddJsonBody(body);
-            client.Execute(request);
+                RestRequest request = new RestRequest(Method.POST);
+                request.AddHeader("Content-Type", "application/json");
+                request.AddHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36");
+                string body = "{\"client_id\":\"play-valorant-web-prod\",\"nonce\":\"1\",\"redirect_uri\":\"https://playvalorant.com/opt_in" + "\",\"response_type\":\"token id_token\",\"scope\":\"account openid\"}";
+                request.AddJsonBody(body);
+                client.Execute(request);
         }
 
         public static string Authenticate(CookieContainer cookie, string user, string pass)
         {
             string url = "https://auth.riotgames.com/api/v1/authorization";
             RestClient client = new RestClient(url);
-
             client.CookieContainer = cookie;
-
             RestRequest request = new RestRequest(Method.PUT);
             string body = "{\"type\":\"auth\",\"username\":\"" + user + "\",\"password\":\"" + pass + "\"}";
             request.AddJsonBody(body);

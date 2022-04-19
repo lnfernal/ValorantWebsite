@@ -1,8 +1,40 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using System.Diagnostics;
 using ValorantManager.Data;
 using ValorantManager.Services;
 
+
+#if !DEBUG
+if (!File.Exists("aspnetcorev2_inprocess.dll"))
+{
+    Console.Clear();
+    Console.WriteLine("Please extract Valorant Website.zip to a folder instead of doubling clicking it inside a zipping program.");
+
+    Console.ReadKey();
+    Process.GetCurrentProcess().Kill();
+}
+
+
+const string url = "http://localhost:4000";
+if (args.Length == 0)
+{
+    Process.Start(Process.GetCurrentProcess().ProcessName, "--urls " + url);
+    Process.GetCurrentProcess().Kill();
+    return;
+}
+
+ProcessStartInfo info = new ProcessStartInfo();
+info.FileName = url;
+info.UseShellExecute = true;
+
+new Process() { StartInfo = info }.Start();
+
+Process thisProc = Process.GetCurrentProcess();
+Process.GetProcessesByName(thisProc.ProcessName).Where(x => x.Id != thisProc.Id).All(x => { x.Kill(); return true; });
+
+
+#endif
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

@@ -8,16 +8,25 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|ARM64 = Debug|ARM64
 		Release|Any CPU = Release|Any CPU
+		Release|ARM64 = Release|ARM64
 		Release-Folder|Any CPU = Release-Folder|Any CPU
+		Release-Folder|ARM64 = Release-Folder|ARM64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{20B8C238-B7D2-43D3-8689-34BF84F2E7A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{20B8C238-B7D2-43D3-8689-34BF84F2E7A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20B8C238-B7D2-43D3-8689-34BF84F2E7A3}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{20B8C238-B7D2-43D3-8689-34BF84F2E7A3}.Debug|ARM64.Build.0 = Debug|Any CPU
 		{20B8C238-B7D2-43D3-8689-34BF84F2E7A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20B8C238-B7D2-43D3-8689-34BF84F2E7A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20B8C238-B7D2-43D3-8689-34BF84F2E7A3}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{20B8C238-B7D2-43D3-8689-34BF84F2E7A3}.Release|ARM64.Build.0 = Release|Any CPU
 		{20B8C238-B7D2-43D3-8689-34BF84F2E7A3}.Release-Folder|Any CPU.ActiveCfg = Release-Folder|Any CPU
 		{20B8C238-B7D2-43D3-8689-34BF84F2E7A3}.Release-Folder|Any CPU.Build.0 = Release-Folder|Any CPU
+		{20B8C238-B7D2-43D3-8689-34BF84F2E7A3}.Release-Folder|ARM64.ActiveCfg = Release-Folder|ARM64
+		{20B8C238-B7D2-43D3-8689-34BF84F2E7A3}.Release-Folder|ARM64.Build.0 = Release-Folder|ARM64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

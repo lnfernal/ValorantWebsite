@@ -15,11 +15,12 @@
 
     @if (OwnedSkins != null)
     {
+        <p>Skin Count: @OwnedSkins.Count</p>
+
         @foreach (var skin in OwnedSkins)
         {
             @if (AddTitle(skin.GunName))
             {
-                <br />
                 <h3>@skin.GunName</h3>
             }
             <div class="card flex-row flex-wrap flex-column" style="background:#484848">

@@ -20,15 +20,10 @@ namespace ValorantManager.Data
         public string Entitlement { get; set; }
         public string puuid { get; set; }
         public long CreationDate { get; set; }
-        public Regions cookie_region { get; set; } = Regions.Auto;
-        public Regions region { get; set; }
-        public LoginState loginState { get; set; }
+        public Classes.Region.RiotServer riotServer { get; set; }
+        public LoginState loginState { get; set; } = LoginState.LoggedOut;
 
         public Wallet.Rootobject wallet { get; set; } = null;
 
-        public User()
-        {
-            loginState = LoginState.LoggedOut;
-        }
     }
 }

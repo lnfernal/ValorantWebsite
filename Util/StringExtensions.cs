@@ -12,7 +12,15 @@ namespace ValorantManager.Util
                 _ => string.Concat(input[0].ToString().ToUpper(), input.AsSpan(1))
             };
 
-        public static string Base64Encode(this string input) => Convert.ToBase64String(Encoding.UTF8.GetBytes(input));
-        public static string Base64Decode(this string input) => Encoding.UTF8.GetString(Convert.FromBase64String(input));
+        public static string Base64Encode(this string input)
+        {
+            var plainTextBytes = Encoding.UTF8.GetBytes(input);
+            return Convert.ToBase64String(plainTextBytes);
+        }
+        public static string Base64Decode(this string encodedString)
+        {
+            byte[] data = Convert.FromBase64String(encodedString);
+            return Encoding.UTF8.GetString(data);
+        }
     }
 }

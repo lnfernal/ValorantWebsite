@@ -5,6 +5,8 @@ using System.Text.Json;
 using System.Net.Http.Headers;
 using System.Text;
 using ValorantManager.Util;
+using RestSharp;
+
 namespace ValorantManager.Services
 {
     public class ValorantService
@@ -16,9 +18,9 @@ namespace ValorantManager.Services
 
         public event Action OnChange;
         private void LoginStateChanged() => OnChange.Invoke();
-        public User user { get; set; } = new User() { loginState = LoginState.LoggedOut };
+        public User user { get; set; } = new User();
 
-        public void Login()
+        public void GetUserInfo()
         {
             var LoginRequest = new HttpRequestMessage(HttpMethod.Get, "https://auth.riotgames.com/userinfo");
             LoginRequest.Headers.Add(AuthorizationHeader, $"Bearer {user.Token}");
@@ -42,21 +44,7 @@ namespace ValorantManager.Services
                 {
                     using var EnresponseStream = EntitlementResponse.Content.ReadAsStream();
                     user.Entitlement = JsonSerializer.Deserialize<JsonElement>(EnresponseStream).GetProperty("entitlements_token").GetString();
-
-                    if (user.cookie_region == Regions.Auto && user.region == Regions.Auto)
-                    {
-                        //No region stored
-                        user.region = GetUserRegion(user);
-                        user.cookie_region = user.region;
-                    }
-                    else
-                    {
-                        //Region stored from cookies
-                        user.region = user.cookie_region;
-                    }
-
                     user.loginState = LoginState.LoggedIn;
-
                 }
                 else
                     user.loginState = LoginState.WrongLogin;
@@ -73,23 +61,32 @@ namespace ValorantManager.Services
             LoginStateChanged();
         }
 
-        public Regions GetUserRegion(User user)
+        public Classes.Region.RiotServer GetUserRegion(string bearer, string id_token)
         {
-            using (WebClient wc = new())
+
+            RestClient client = new RestClient("https://riot-geo.pas.si.riotgames.com/pas/v1/product/valorant");
+
+            RestRequest request = new RestRequest(Method.PUT);
+
+            string body = "{ \"id_token\" : \"" + id_token + "\" }";
+
+            request.AddHeader("Authorization", $"Bearer {bearer}");
+            request.AddJsonBody(body);
+
+            IRestResponse response = client.Execute(request);
+            string region = JsonSerializer.Deserialize<Classes.RiotGeo.Rootobject>(response.Content).affinities.live;
+
+
+            switch (region)
             {
-                wc.Headers.Add(HttpRequestHeader.Authorization, $"Bearer {user.Token}");
-                wc.Headers.Add(RiotEntitlementHeader, user.Entitlement);
+                case "ap": return Classes.Region.RegionList.AsiaPacific;
+                case "br": return Classes.Region.RegionList.Brazil;
+                case "eu": return Classes.Region.RegionList.Europe;
+                case "kr": return Classes.Region.RegionList.Korea;
+                case "latam": return Classes.Region.RegionList.LatinAmerica;
+                case "na": return Classes.Region.RegionList.NorthAmerica;
 
-                foreach (Regions region in Enum.GetValues(typeof(Regions)))
-                {
-                    if (region == Regions.Auto)//We dont want to check for 'Auto' coz its not an actual region
-                        continue;
-
-                    string CheckRegion = wc.DownloadString($"https://pd.{region}.a.pvp.net/store/v1/entitlements/{user.puuid}");
-                    if (CheckRegion.Length > 335)
-                        return region;
-                }
-                return Regions.na;//Default
+                default: return Classes.Region.RegionList.NorthAmerica;
             }
         }
 
@@ -102,7 +99,7 @@ namespace ValorantManager.Services
             WebClient wc = new();
             AddBearer(ref wc);
             AddEntitlements(ref wc);
-            return JsonSerializer.Deserialize<Loadout.Root>(wc.DownloadString($"https://pd.{user.region}.a.pvp.net/personalization/v2/players/{user.puuid}/playerloadout"));
+            return JsonSerializer.Deserialize<Loadout.Root>(wc.DownloadString($"{Endpoints.PlayerData(user.riotServer)}/personalization/v2/players/{user.puuid}/playerloadout"));
         }
 
         public bool SetPlayerLoadout(Loadout.Root loadout)
@@ -112,7 +109,7 @@ namespace ValorantManager.Services
                 WebClient wc = new();
                 AddBearer(ref wc);
                 AddEntitlements(ref wc);
-                string url = $"https://pd.{user.region}.a.pvp.net/personalization/v2/players/{user.puuid}/playerloadout";
+                string url = $"{Endpoints.PlayerData(user.riotServer)}/personalization/v2/players/{user.puuid}/playerloadout";
                 string response = wc.UploadString(url, "PUT", JsonSerializer.Serialize(loadout));
                 return true;
             }
@@ -157,7 +154,7 @@ namespace ValorantManager.Services
             WebClient wc = new();
             AddBearer(ref wc);
             AddEntitlements(ref wc);
-            return JsonSerializer.Deserialize<Entitlements.Rootobject>(wc.DownloadString($"https://pd.{user.region}.a.pvp.net/store/v1/entitlements/{user.puuid}"));
+            return JsonSerializer.Deserialize<Entitlements.Rootobject>(wc.DownloadString($"{Endpoints.PlayerData(user.riotServer)}/store/v1/entitlements/{user.puuid}"));
         }
 
         public StoreFrontV2.Root Store_GetStorefrontV2()
@@ -165,7 +162,7 @@ namespace ValorantManager.Services
             WebClient wc = new();
             AddBearer(ref wc);
             AddEntitlements(ref wc);
-            string shopresponse = wc.DownloadString($"https://pd.{user.region}.a.pvp.net/store/v2/storefront/{user.puuid}");
+            string shopresponse = wc.DownloadString($"{Endpoints.PlayerData(user.riotServer)}/store/v2/storefront/{user.puuid}");
             return JsonSerializer.Deserialize<StoreFrontV2.Root>(shopresponse);
         }
 
@@ -275,7 +272,7 @@ namespace ValorantManager.Services
             WebClient wc = new();
             AddBearer(ref wc);
             AddEntitlements(ref wc);
-            string url = $"https://pd.{user.region}.a.pvp.net/store/v1/wallet/{user.puuid}";
+            string url = $"{Endpoints.PlayerData(user.riotServer)}/store/v1/wallet/{user.puuid}";
             return JsonSerializer.Deserialize<Wallet.Rootobject>(wc.DownloadString(url));
         }
 
@@ -356,7 +353,7 @@ namespace ValorantManager.Services
             WebClient wc = new();
             AddBearer(ref wc);
             AddEntitlements(ref wc);
-            string url = $"https://glz-{user.region}-1.{user.region}.a.pvp.net/core-game/v1/players/{user.puuid}";
+            string url = $"{Endpoints.CoreGame(user.riotServer)}/core-game/v1/players/{user.puuid}";
             try
             {
                 return JsonSerializer.Deserialize<CoreGame_FetchPlayer.Root>(wc.DownloadString(url));
@@ -372,7 +369,7 @@ namespace ValorantManager.Services
             WebClient wc = new();
             AddBearer(ref wc);
             AddEntitlements(ref wc);
-            string url = $"https://glz-{user.region}-1.{user.region}.a.pvp.net/core-game/v1/matches/{MatchID}";
+            string url = $"{Endpoints.CoreGame(user.riotServer)}/core-game/v1/matches/{MatchID}";
             try
             {
                 return JsonSerializer.Deserialize<CoreGame_FetchMatch.Root>(wc.DownloadString(url));
@@ -388,7 +385,7 @@ namespace ValorantManager.Services
             WebClient wc = new();
             AddBearer(ref wc);
             AddEntitlements(ref wc);
-            string url = $"https://glz-{user.region}-1.{user.region}.a.pvp.net/core-game/v1/matches/{MatchID}/loadouts";
+            string url = $"{Endpoints.CoreGame(user.riotServer)}/core-game/v1/matches/{MatchID}/loadouts";
             try
             {
                 return JsonSerializer.Deserialize<CoreGame_FetchMatch.Root>(wc.DownloadString(url));
@@ -399,27 +396,12 @@ namespace ValorantManager.Services
             }
         }
 
-        public CoreGame_FetchPlayer.Root Pregame_GetPlayer()
-        {
-            WebClient wc = new WebClient();
-            AddBearer(ref wc);
-            AddEntitlements(ref wc);
-            string url = $"https://glz-{user.region}-1.{user.region}.a.pvp.net/pregame/v1/players/{user.puuid}";
-            try
-            {
-                return JsonSerializer.Deserialize<CoreGame_FetchPlayer.Root>(wc.DownloadString(url));
-            }
-            catch
-            {
-                return null;
-            }
-        }
         public Dictionary<string, string> IDToUsername(string[] puuidArray)
         {
             using (WebClient wc = new())
             {
                 //No auth required for name service
-                string url = $"https://pd.{user.region}.a.pvp.net/name-service/v2/players";
+                string url = $"{Endpoints.PlayerData(user.riotServer)}/name-service/v2/players";
 
                 string req = wc.UploadString(url, "PUT", JsonSerializer.Serialize(puuidArray));
 
@@ -442,7 +424,7 @@ namespace ValorantManager.Services
             AddBearer(ref wc);
             AddEntitlements(ref wc);
             wc.Headers.Add(RiotPlatformHeader, RiotPlatformHeaderValue);
-            string url = $"https://pd.{user.region}.a.pvp.net/mmr/v1/players/{puuid}/competitiveupdates?queue=competitive&endIndex=3&startIndex=0";
+            string url = $"{Endpoints.PlayerData(user.riotServer)}/mmr/v1/players/{puuid}/competitiveupdates?queue=competitive&endIndex=3&startIndex=0";
             return JsonSerializer.Deserialize<FetchCompetitiveUpdates.Root>(wc.DownloadString(url));
         }
 
@@ -530,7 +512,7 @@ namespace ValorantManager.Services
             wc.Headers.Add("X-Riot-ClientVersion", RiotClientVersion);
 
 
-            JsonElement response = JsonSerializer.Deserialize<JsonElement>(wc.DownloadString($"https://pd.{user.region}.a.pvp.net/mmr/v1/players/{puuid}"));
+            JsonElement response = JsonSerializer.Deserialize<JsonElement>(wc.DownloadString($"{Endpoints.PlayerData(user.riotServer)}/mmr/v1/players/{puuid}"));
 
             JsonElement.ObjectEnumerator seasonslist;
             try

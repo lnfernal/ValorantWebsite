@@ -20,7 +20,8 @@
         Account Created On: @ValorantService.GetAccountCreationDate(ValorantService.user.CreationDate) (UTC) <br>
         Valorant Points: @ValorantService.user.wallet.Balances.ValorantPoints <br />
         Radianite: @ValorantService.user.wallet.Balances.Radianite <br />
-        Region: @ValorantService.user.region <br />
+        Region: @ValorantService.user.riotServer.region <br />
+        Shard: @ValorantService.user.riotServer.shard <br />
         <br>
         <ul class="list-group text-break" style="background:#484848;width:80vw">
             <p class="text-left" style="padding-left:5px">Current Token:</p>
@@ -30,7 +31,10 @@
         </ul>
 
     </p>
-    <button type="button" class="btn btn-primary" @onclick="@GetQRCode">Get QR Code to login to Pro Swapper Valorant on mobile</button>
+    
+    @if (false)//Change this to true to enable QR code sign in with a specific domain
+    {
+        <button type="button" class="btn btn-primary" @onclick="@GetQRCode">Get QR Code to login to Pro Swapper Valorant on mobile</button>
     @if (QRCode != null)
     {
         <p>
@@ -38,6 +42,8 @@
         </p>
         <img src="@QRCode" style="height:300px; width:300px" />
     }
+    }
+    
 }
 
 <br />

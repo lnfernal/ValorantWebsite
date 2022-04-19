@@ -22,38 +22,10 @@
     Note: We do NOT store any user information such as usernames, passwords or tokens. Riot Games emails the inbox with a one time password when changing passwords so we cannot change your password.
 </h6>
 
-@if (valService.user.loginState == LoginState.LoggedOut || valService.user.loginState == LoginState.WrongLogin)
+@if (valService.user.loginState != LoginState.LoggedIn )
 {
-    <p>Please choose your login method:</p>
-
-
-    @if (loginType != LoginType.UserPass)
-    {
-        <button class="btn btn-primary" @onclick="() => SetLoginType(LoginType.UserPass)">Login with Username & Password</button>
-        <br />
-        <br />
-    }
-
-    @if (loginType != LoginType.Token)
-    {
-        <button class="btn btn-primary" @onclick="() => SetLoginType(LoginType.Token)">Login with Token</button>
-        <br />
-        <br />
-    }
-
-
-    @if (loginType == LoginType.Token)
-    {
-        <p>Please login via your Valorant Token. Learn <a target="_blank" href="https://github.com/Pro-Swapper/ValorantGuide/blob/main/GettingToken.md">here</a> to get your Valorant token.</p>
-        <label class="font-weight-bold">Valorant Account Token:</label>
-        <EditForm Model="@valService.user">
-            <InputText class="form-control" style="width:30vw" @bind-Value="valService.user.Token" placeholder="xxxx" />
-        </EditForm>
-    }
-
-
-    @if (loginType == LoginType.UserPass)
-    {
+    <label class="font-weight-bold">Please login with your username and password:</label>
+                
         @if (Show2FAInput)
         {
             <EditForm Model="@Code2FA">
@@ -63,68 +35,34 @@
                 <label class="font-weight-bold">2FA Code:</label>
                 <InputText class="form-control" style="width:30vw" @bind-Value="Code2FA" placeholder="000000" />
             </EditForm>
+
+             <br />
+            <button class="btn btn-primary" @onclick="Submit2FA">Submit 2FA Code</button>
+            <br />
         }
         else
         {
             <EditForm Model="@valService.user">
-                <label class="font-weight-bold">Valorant Account Login:</label>
                 <InputText class="form-control" style="width:30vw" @bind-Value="valService.user.auth_username" placeholder="Username" />
                 <br>
                 <InputText type="password" class="form-control" style="width:30vw" @bind-Value="valService.user.auth_password" placeholder="Password" />
             </EditForm>
-        }
-    }
 
-
-    <EditForm Model="@valService.user">
-        <br />
-        <label class="font-weight-bold">Select your region (Optional):</label>
-        <br />
-        <div class="row-cols-6">
-            <InputSelect @bind-Value="valService.user.region">
-                @foreach (var value in Enum.GetValues(typeof(Regions)))
-                {
-                <option>@value</option>
-                }
-        </InputSelect>
-    </div>
-</EditForm>
-    @if (valService.user.Token != "rate_limited")
-    {
-        @if (!Show2FAInput)
-        {
-            <br />
+             <br />
             <button class="btn btn-primary" @onclick="LoginButton">Login</button>
             <br />
         }
-        else
-        {
-            <br />
-            <button class="btn btn-primary" @onclick="Submit2FA">Submit 2FA Code</button>
-            <br />
-        }
-    }
+    
 
-    @if (valService.user.loginState == LoginState.WrongLogin && loginType == LoginType.Token)
-    {
-        <div class="alert alert-danger" role="alert" style="width:60vw; word-break:break-word">That token is invalid! Tokens expire after 1 hour.</div>
-    }
-    @if (valService.user.loginState == LoginState.WrongLogin && loginType == LoginType.UserPass && !Show2FAInput)
+    @if (valService.user.loginState == LoginState.WrongLogin && !Show2FAInput)
     {
         <div class="alert alert-danger" role="alert" style="width:60vw; word-break:break-word">That username and/or password is incorrect! Make sure that you are entering your Riot username and NOT your Riot ID with the #. If you do not know your Riot Username you can request it with your email <a href="https://recovery.riotgames.com/en/forgot-username">here</a></div>
     }
-    @if (valService.user.loginState == LoginState.WrongLogin && loginType == LoginType.UserPass && Show2FAInput)
+    @if (valService.user.loginState == LoginState.WrongLogin && Show2FAInput)
     {
         <div class="alert alert-danger" role="alert" style="width:60vw; word-break:break-word">That 2FA code is incorrect!</div>
     }
-    @if (valService.user.Token == "rate_limited")
-    {
-        <div class="alert alert-danger" role="alert" style="width:60vw; word-break:break-word">You have tried to login too many times! Try again later. (Error: Rate Limited)</div>
-    }
 }
-
-
-
 
 @if (valService.user.loginState == LoginState.LoggingIn)
 {
@@ -138,18 +76,14 @@
     <label class="col-2 font-weight-bold">Welcome @valService.user.Name</label>
 }
 
-
-<br />
-<br />
 <br />
 <hr />
 <h2>News</h2>
 <br />
 
-@if (News_Instance != null)
-{
+
     <div class="card-group">
-        @foreach (var item in News_Instance.Result.Data.AllContentstackArticles.Nodes.Take(8).ToList())
+        @foreach (var item in News.Result.Data.AllContentstackArticles.Nodes.Take(16).ToList())
         {
             <div class="col-sm-3">
                 <div class="card text-white m-1 text-center" style="background:#484848">
@@ -164,37 +98,8 @@
             </div>
         }
     </div>
-}
+
 <br />
-
-<hr />
-<br />
-<h3><strong>Upcoming Features</strong></h3>
-<p class="text">
-    View Night Market<br />
-    Skin + Gun Buddy Presets<br />
-    See all own cosmetics<br />
-    Select any spray for mid round<br />
-    Gun Skin + Buddy Randomizer
-</p>
-
-<div style="position: relative;"><img src="https://publisher.linkvertise.com/cdn/ads/LV-468x60/Unbendgfannt-1.jpg" frameborder="0" height="60" width="468"><a href="https://publisher.linkvertise.com/ac/86737" target="_blank" style="position: absolute; top: 0; bottom: 0; left: 0; right: 0;"></a></div>
-
-
-@if (LastError != null)
-{
-    @LastError.Message
-    <br />
-    @LastError.Source
-    <br />
-    @LastError.StackTrace
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    @Loginresponse
-}
 
 <footer style="position:fixed; right:0px; bottom:0px;">
     <div class="list-group-item text-break" style="font-size:small;background:#c62828;color:white;width:40vw;border-radius:13px">We are not affiliated, associated, authorized, endorsed by, or in any way officially connected with VALORANT or Riot Games, Inc.</div>
@@ -202,130 +107,97 @@
 
 @code {
 
-    private const string SplitKey = "kdsjakDASD77a8dAHSDUASHDA787KAODASD*as7dasdhASD";
-    private Exception LastError = null;
-    private string Loginresponse = "";
+    public static News.Root News 
+    { 
+        get
+        {
+            if (News_Instance == null)
+                News_Instance = JsonSerializer.Deserialize<News.Root>(new WebClient().DownloadString("https://playvalorant.com/page-data/en-us/news/page-data.json"));
 
-    public static News.Root News_Instance { get; set; } = null;
-
-    enum LoginType
-    {
-        None,
-        UserPass,
-        Token
+            return News_Instance;
+        } 
     }
-    LoginType loginType = LoginType.UserPass;
+    private static News.Root News_Instance { get; set; } = null;
+
+    private bool AlreadyGotCookies = false;
 
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
-        News_Instance = JsonSerializer.Deserialize<News.Root>(new WebClient().DownloadString("https://playvalorant.com/page-data/en-us/news/page-data.json"));
-        bool PreLogin = false;
-        string URLToken = string.Empty;
-        string CookieToken = string.Empty;
-        if (QueryHelpers.ParseQuery(NavManager.ToAbsoluteUri(NavManager.Uri).Query).TryGetValue("token", out var OutToken))
+        if (!AlreadyGotCookies)
         {
-            PreLogin = true;
-            URLToken = Convert.ToString(OutToken);
-        }
-        else
-        {
-            CookieToken = await cookie.GetValue("data");
-            PreLogin = CookieToken.Length > 1;
-        }
-
-
-
-        if (PreLogin && firstRender && valService.user.loginState != LoginState.LoggedIn)
-        {
-            valService.user.loginState = LoginState.LoggingIn;
-            await InvokeAsync(StateHasChanged);
-            StateHasChanged();
-
-
-            //Methods for logging in
-            if (URLToken.Length > 1)
+            if (valService.user.loginState != LoginState.LoggedIn || valService.user.loginState != LoginState.LoggingIn)
             {
-                valService.user.Token = URLToken;
-                loginType = LoginType.Token;
-            }
-            else if (CookieToken.Length > 1)
-            {
-                string[] decoded = CookieToken.Base64Decode().Split(new string[] { SplitKey }, StringSplitOptions.None);
-                valService.user.auth_username = decoded[0];
-                valService.user.auth_password = decoded[1];
+                bool PreLogin = false;
+                string CookieToken = await cookie.GetValue("data");
+                PreLogin = CookieToken.Length > 1;
 
-                if (decoded.Length > 2)
+                if (PreLogin && valService.user.loginState != LoginState.LoggedIn)
                 {
-                    Enum.TryParse(decoded[2], out Regions lastRegion);
-                    valService.user.cookie_region = lastRegion;
-                }
+                    valService.user.loginState = LoginState.LoggingIn;
+                    await InvokeAsync(StateHasChanged);
 
-                loginType = LoginType.UserPass;
+
+                    //Methods for logging in
+                    if (CookieToken.Length > 1)//FIX auto login through cookie, base64 not working
+                    {
+                        AlreadyGotCookies = true;
+                        string dataCookie = CookieToken.Base64Decode();
+                        string[] decoded = dataCookie.Split(':');
+                        valService.user.auth_username = decoded[0];
+                        valService.user.auth_password = decoded[1];
+                        await InvokeAsync(StateHasChanged);
+                        await Task.Run(() => LoginButton());
+                    }
+                }
             }
-            await InvokeAsync(StateHasChanged);
-            await Task.Run(() => LoginButton());
         }
     }
 
-
-
-
-
-
-    private async Task SetLoginType(LoginType loginT)
-    {
-        loginType = loginT;
-        valService.user.loginState = LoginState.LoggedOut;
-
-        await InvokeAsync(StateHasChanged);
-    }
 
 
     private bool Show2FAInput = false;
-    private string Code2FA = "";
-    private CookieContainer cookiejar = new CookieContainer();
-    public string Login(string username, string password)
+    private string Code2FA = ""; 
+
+    public Classes.LoginResponse.Rootobject Login(string username, string password)
     {
-        UserPassLogin.GetAuthorization(cookiejar);
+        UserPassLogin.GetAuthorization();//set cookie container
+        string loginResponse = UserPassLogin.Authenticate(UserPassLogin._cookieContainer, username, password);
+        var loginObj = JsonSerializer.Deserialize<Classes.LoginResponse.Rootobject>(loginResponse);
 
-        string loginResponse = UserPassLogin.Authenticate(cookiejar, username, password);
-        Loginresponse += loginResponse;
-        var authJson = JsonSerializer.Deserialize<JsonElement>(loginResponse);
-        if (loginResponse.Contains("rate_limited"))
+        switch (loginObj.type)
         {
-            return "rate_limited";
-        }
-
-        string LoginType = authJson.GetProperty("type").ToString();
-        switch (LoginType)
-        {
-            case "response"://Normal username & password login
-                string authURL = authJson.GetProperty("response").GetProperty("parameters").GetProperty("uri").GetString();
-                return Regex.Match(authURL, @"access_token=(.+?)&scope=").Groups[1].Value;
+            //Normal username & password login
+            case "response":
+                return loginObj;
             case "multifactor"://2FA login
                 Show2FAInput = true;
                 InvokeAsync(StateHasChanged);
-                break;
+                return null;
+            default:
+                return null;
         }
-        return null;
     }
 
     public async Task Submit2FA()
     {
         try
         {
-            string auth2FAURL = UserPassLogin.MultifactorCode(Code2FA, cookiejar).GetProperty("response").GetProperty("parameters").GetProperty("uri").GetString();
-            string token = Regex.Match(auth2FAURL, @"access_token=(.+?)&scope=").Groups[1].Value;
-            valService.user.Token = token;
-            await Task.Run(() => valService.Login());
-            if (loginType == LoginType.UserPass)
-                await cookie.SetValue("data", (valService.user.auth_username + SplitKey + valService.user.auth_password + SplitKey + valService.user.region).Base64Encode(), 365);
+            string auth2FAURL = UserPassLogin.MultifactorCode(Code2FA, UserPassLogin._cookieContainer).GetProperty("response").GetProperty("parameters").GetProperty("uri").GetString();
+            string bearer = Regex.Match(auth2FAURL, @"access_token=(.+?)&scope=").Groups[1].Value;
+            string id_token = Regex.Match(auth2FAURL, @"id_token=(.+?)&token_type=").Groups[1].Value;
+
+            valService.user.Token = bearer;
+            valService.user.riotServer = valService.GetUserRegion(bearer, id_token);//Using the user's bearer token & id_token, fetch region.
+
+            await Task.Run(() => valService.GetUserInfo());
+            await cookie.SetValue("data", (valService.user.auth_username + ';' + valService.user.auth_password).Base64Encode(), 365);
         }
         catch
         {
             valService.user.loginState = LoginState.WrongLogin;
-            await InvokeAsync(StateHasChanged);
+
         }
+        await InvokeAsync(StateHasChanged);
     }
 
 
@@ -334,48 +206,42 @@
         try
         {
             valService.user.loginState = LoginState.LoggingIn;
-            if (loginType == LoginType.UserPass)
-                valService.user.Token = Login(valService.user.auth_username, valService.user.auth_password);
-
-            if (valService.user.Token == null)
+            Classes.LoginResponse.Rootobject loginResponse = Login(valService.user.auth_username, valService.user.auth_password);
+            if (loginResponse != null)
             {
-                valService.user.loginState = LoginState.LoggedOut;
-                await InvokeAsync(StateHasChanged);
-                return;
-            }
-            if (valService.user.Token == "rate_limited")
-            {
-                valService.user.loginState = LoginState.LoggedOut;
-                await InvokeAsync(StateHasChanged);
-                return;
-            }
+                string id_token = Regex.Match(loginResponse.response.parameters.uri, @"id_token=(.+?)&token_type=").Groups[1].Value;
+                string bearer = Regex.Match(loginResponse.response.parameters.uri, @"access_token=(.+?)&scope=").Groups[1].Value;
+                valService.user.Token = bearer;//Store the user's bearer token
+                valService.user.riotServer = valService.GetUserRegion(bearer, id_token);//Using the user's bearer token & id_token, fetch region.
 
-            await Task.Run(() => valService.Login());
-            if (loginType == LoginType.UserPass)
-                await cookie.SetValue("data", (valService.user.auth_username + SplitKey + valService.user.auth_password + SplitKey + valService.user.region).Base64Encode(), 365);
-            await InvokeAsync(StateHasChanged);
+
+                if (String.IsNullOrEmpty(valService.user.Token) || valService.user.Token == "rate_limited")
+                {
+                    valService.user.loginState = LoginState.LoggedOut;
+                    await InvokeAsync(StateHasChanged);
+                    return;
+                }
+
+                await Task.Run(() => valService.GetUserInfo());
+                string base64cookie = (valService.user.auth_username + ':' + valService.user.auth_password).Base64Encode();
+                await cookie.SetValue("data",base64cookie , 365);
+            }
+            
         }
         catch (Exception ex)
-
         {
             valService.user.loginState = LoginState.WrongLogin;
-            await InvokeAsync(StateHasChanged);
             await cookie.SetValue("data", string.Empty, 0);
-            LastError = ex;
         }
-
+        await InvokeAsync(StateHasChanged);
     }
 
     private static string GetNewsURL(JsonModels.News.Node item)
     {
         if (item.ExternalLink.Length > 0)
-        {
             return item.ExternalLink;
-        }
         else
-        {
             return $"https://playvalorant.com/en-us{@item.Url.url}";
-        }
     }
 
     private static string GetTimeSince(DateTime date) => ToReadableString(DateTime.Now.ToUniversalTime() - date);
