@@ -25,8 +25,7 @@ Global
 		{20B8C238-B7D2-43D3-8689-34BF84F2E7A3}.Release|ARM64.Build.0 = Release|Any CPU
 		{20B8C238-B7D2-43D3-8689-34BF84F2E7A3}.Release-Folder|Any CPU.ActiveCfg = Release-Folder|Any CPU
 		{20B8C238-B7D2-43D3-8689-34BF84F2E7A3}.Release-Folder|Any CPU.Build.0 = Release-Folder|Any CPU
-		{20B8C238-B7D2-43D3-8689-34BF84F2E7A3}.Release-Folder|ARM64.ActiveCfg = Release-Folder|ARM64
-		{20B8C238-B7D2-43D3-8689-34BF84F2E7A3}.Release-Folder|ARM64.Build.0 = Release-Folder|ARM64
+		{20B8C238-B7D2-43D3-8689-34BF84F2E7A3}.Release-Folder|ARM64.ActiveCfg = Release-Folder|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

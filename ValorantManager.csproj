@@ -5,14 +5,11 @@
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <Configurations>Debug;Release;Release-Folder</Configurations>
-    <Platforms>AnyCPU;ARM64</Platforms>
+    <Platforms>AnyCPU</Platforms>
+    <ApplicationIcon>wwwroot\favicon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-Folder|AnyCPU'">
-    <Optimize>True</Optimize>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release-Folder|ARM64'">
     <Optimize>True</Optimize>
   </PropertyGroup>
 
@@ -25,12 +22,10 @@
 
   <ItemGroup>
     <Content Remove="JsonData\competitivetiers.json" />
-    <Content Remove="Pages\Index2.razor" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="JsonData\competitivetiers.json" />
-    <None Include="Pages\Index2.razor" />
   </ItemGroup>
 
   <ItemGroup>
